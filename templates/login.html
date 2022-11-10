@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %} {% static 'css/sign.css' %} {% endblock %}
+
+<!-- Title -->
+{% block title %} SignIn {% endblock %}
+
+{% block index %}
+
+<section>
+    <!-- Form Content-->
+    <div class="form-content">
+        <div class="form-container p-4">
+            <h3 class="text-center mb-4">Sign<span class="text-primary">In</span></h3>
+            <form action="loginUser" method="post">
+                {% csrf_token %}
+                {% for message in messages %}
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        <i class="fa-solid fa-envelope"></i>
+                        Email
+                    </label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Your email address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        <i class="fa-solid fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Your password" required>
+                </div>
+               
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </div>
+                <div class="mb-3">
+                    <p>Don't have an account? <span class="bold"><a href="/register">signup</a></span>
+                    </p>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!-- Img Content-->
+    <div class="bgImg">
+        <img src="{% static 'images/logbg.jpg' %}" />
+    </div>
+</section>
+
+{% endblock %}

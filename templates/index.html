@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %} {% static 'css/index.css' %} {% endblock %}
+
+<!-- Title -->
+{% block title %} Home {% endblock %}
+
+<!-- Content -->
+{% block index %}
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg" id="my-nav">
+    <div class="container">
+        <h1 class="navbar-brand text-primary">Foodie</h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa-sharp fa-solid fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav fs-4 ms-auto">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                </li>
+                <li class="nav-item text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            {{request.user.full_name}}
+                        </button>
+                        <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li><a class="dropdown-item" href="#">Adresses</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="loginUser">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="registerUser">SignUp</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Video Background -->
+<video autoplay muted loop id="bg-video" oncontextmenu="return false;">
+    <source src="{% static 'videos/Foodie.mp4' %}" type="video/mp4">
+</video>
+
+<!-- Featured Food Items -->
+<section id="features-food">
+    <div class="text-center text-primary featured-food-title m-4">Featured</div>
+    <!-- featured Boxes -->
+    <div class="featured-container mb-4">
+        <div class="row row-cols-1 row-cols-sm-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-img-zoom">
+                        <img src="https://t.ly/PR62" class="card-img-top" style="height: 18rem;">
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Domino's Veg-Pizza</h4>
+                        <i style="color: #0d6efd;">Dominos</i>
+                        <br/>
+                        <p class="mt-2">Pepper, Sauce, Cashew</p>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-img-zoom">
+                        <img src="https://t.ly/EboO" class="card-img-top" style="height: 18rem;">
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Chicken Burger</h4>
+                        <i style="color: #0d6efd;">Burger King</i>
+                        <br/>
+                        <p class="mt-2">Fried Chicken, potatoes, onions</p>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-img-zoom">
+                        <img src="https://t.ly/6GgS" class="card-img-top" style="height: 18rem;">
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Chicken Dum Biryani</h4>
+                        <i style="color: #0d6efd;">RR Durbar</i>
+                        <br/>
+                        <p class="mt-2">N/A</p>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- Banner -->
+<section id="offer-banner">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://birthday.pizzahut.co.in/unlimited-pizza-friday/img/UPF-full.jpg"
+                     class="d-block w-100 offer-img" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://t.ly/DJy7" class="d-block w-100 offer-img" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="https://d4t7t8y8xqo0t.cloudfront.net/resized/1080X400/pages%2F1051%2Fimage20201109063955.jpg"
+                     class="d-block w-100 offer-img" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<!-- Footer -->
+<section id="footer">
+    <!-- News Letter -->
+    <div class="row news-letter">
+        <div class="col-md-5 p-5" style="text-align: center; background-color: #0d6efd;">
+            <h5>SUBSCRIBE TO OUR</h5>
+            <h2>NEWSLETTER</h2>
+        </div>
+        <div class="col-md-7 p-4 news-form-wrapper">
+            <div class="input-group">
+                <form class="news-form">
+                    <input class="form-control form-control-lg rounded-pill" type="email"
+                           placeholder="Enter Email adress">
+                    <button class="btn btn-primary rounded-pill" type="submit" id="button-addon2">SUBSCRIBE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Footer Links -->
+    <div class="p-4 d-flex flex-wrap justify-content-evenly align-items-center">
+        <!-- Footer Links - 1 -->
+        <div class="footer-links-1">
+            <div class="footer-head ps-4 text-uppercase">About</div>
+            <div class="footer-links">
+                <ul class="ps-4">
+                    <li><a href="#!">our company</a></li>
+                    <li><a href="#!">our Team</a></li>
+                    <li><a href="#!">our Blog</a></li>
+                    <li><a href="#!">Privacy Policy</a></li>
+                    <li><a href="#!">Cookie Policy</a></li>
+                    <li><a href="#!">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Footer Links - 2 -->
+        <div class="footer-links-2">
+            <div class="footer-head ps-4 text-uppercase">Legal</div>
+            <div class="footer-links">
+                <ul class="ps-4">
+                    <li><a href="#!">Terms & Conditions</a></li>
+                    <li><a href="#!">Offer Terms</a></li>
+                    <li><a href="#!">Report issues</a></li>
+                    <li><a href="#!">Work with Us</a></li>
+                    <li><a href="#!">Partnet with Us</a></li>
+                    <li><a href="#!">Help & Supprot</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Footer Social Media Links -->
+        <div class="footer-insta">
+            <!-- Insta Title -->
+            <div class="footer-head text-uppercase text-center align-item-center">
+                <span><i class="fa-brands fa-instagram border p-2 rounded-circle fs-2"></i> </span>
+                <span class="fs-3">Instagram</span>
+            </div>
+            <!-- Insta Hashtags -->
+            <div class="text-center">
+                <p>Tag us with <span class="text-primary">#EatWithFoodie</span></p>
+            </div>
+            <!-- Insta Pics -->
+            <div class="gallery d-flex flex-wrap justify-content-center align-items-center">
+                <div class="gallery-item p-2" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&h=250&fit=crop"
+                         class="gallery-image" alt="">
+                </div>
+
+                <div class="gallery-item p-2" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=300&h=250&fit=crop"
+                         class="gallery-image" alt="">
+                </div>
+
+                <div class="gallery-item p-2" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&h=250&fit=crop"
+                         class="gallery-image" alt="">
+                </div>
+            </div>
+            <div class="gallery d-flex flex-wrap justify-content-center align-items-center">
+                <div class="gallery-item p-2" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?w=300&h=250&fit=crop"
+                         class="gallery-image" alt="">
+                </div>
+
+                <div class="gallery-item p-2" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1584949602334-4e99f98286a9?w=300&h=250&fit=crop"
+                         class="gallery-image" alt="">
+                </div>
+
+                <div class="gallery-item p-2" tabindex="0">
+                    <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=300&h=250&fit=crop"
+                         class="gallery-image" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+<!-- Scripts -->
+{% block script %}
+<script>
+    // Navbar
+    var myNav = document.getElementById('my-nav');
+    window.onscroll = function () { scrollFunction() };
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            myNav.classList.add("nav-scroll");
+            myNav.classList.remove("nav-top");
+        } else {
+            myNav.classList.add("nav-top");
+            myNav.classList.remove("nav-scroll");
+        }
+    }
+
+    // Forms
+    const form = document.getElementById('reg-form')
+    const regFullName = document.getElementById('reg-name')
+    const regEmail = document.getElementById('reg-email')
+    const regPwd = document.getElementById('reg-pwd')
+    const regConfirmPwd = document.getElementById('reg-con-pwd')
+    const msgError = document.getElementById('form-error')
+
+    form.addEventListener('submit', (e) => {
+        let messages = []
+
+        if(regFullName.value === '' || regFullName.value == null) {
+            messages.push('Name is required')
+        }
+
+        if(messages.length > 0) {
+            e.preventDefault()
+            msgError.innerHTML = messages.join(',');
+        }
+
+        alert(messages)
+        console.log('Messages: ',messages)
+
+    })
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

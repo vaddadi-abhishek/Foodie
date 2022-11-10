@@ -1,0 +1,30 @@
+#Packaging
+*.pyc
+__pycache__
+*.egg-info
+/dist/
+/build/
+/node_modules/
+/db.sqlite3
+.env
+
+#Media
+/assets/
+
+#venv
+/venv/
+
+# Temporary/OS files
+*.swp
+*.swo
+*.*~
+.~lock.*
+*.DS_Store
+.python-version
+
+# IDE files
+.project
+.pydevproject
+.settings
+.idea/
+.vscode
