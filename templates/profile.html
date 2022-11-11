@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %} {% static 'css/index.css' %} {% endblock %}
+
+<!-- Title -->
+{% block title %} {{request.user.full_name}}'s Profile {% endblock %}
+
+<!-- Content -->
+{% block index %}
+<div class="container">
+    <div class="row">
+        <!-- Profile & Navigation Column-->
+        <div class="col-md-4 p-4">
+            <div class="img-container p-1 d-flex justify-content-center" style="border-radius:50%">
+                <img src="{% static 'images/panda.jpg' %}" class="rounded-circle align-items-center"
+                     style="width:80%; pointer:cursor;"/>
+            </div>
+            <div class="list-group p-3">
+                <a href="#" class="list-group-item list-group-item-action active">The current link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A fifth link item</a>
+            </div>
+        </div>
+        <!-- Navigated Page Content Column -->
+        <div class="col-md-8 bg-warning">
+
+        </div>
+    </div>
+</div>
+{% endblock %}

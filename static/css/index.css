@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 
+#lblCartCount {
+    font-size: 15px;
+    vertical-align: top;
+    margin-left: -10px;
+    border-radius: 18px;
+}
+
+.dropdown-menu[data-bs-popper] {
+    margin-left: -4rem;
+}
+
 body::-webkit-scrollbar {
     width: 0.15rem;
 }

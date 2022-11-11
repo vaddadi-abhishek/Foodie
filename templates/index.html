@@ -9,48 +9,6 @@
 <!-- Content -->
 {% block index %}
 <!-- Navbar -->
-<nav class="navbar fixed-top navbar-expand-lg" id="my-nav">
-    <div class="container">
-        <h1 class="navbar-brand text-primary">Foodie</h1>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa-sharp fa-solid fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav fs-4 ms-auto">
-                {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
-                </li>
-                <li class="nav-item text-center">
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            {{request.user.full_name}}
-                        </button>
-                        <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Orders</a></li>
-                            <li><a class="dropdown-item" href="#">Adresses</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="logout">Logout</a></li>
-                        </ul>
-                    </div>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="loginUser">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="registerUser">SignUp</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
-
 <!-- Video Background -->
 <video autoplay muted loop id="bg-video" oncontextmenu="return false;">
     <source src="{% static 'videos/Foodie.mp4' %}" type="video/mp4">
@@ -251,6 +209,7 @@
 <script>
     // Navbar
     var myNav = document.getElementById('my-nav');
+    myNav.classList.add("fixed-top");
     window.onscroll = function () { scrollFunction() };
     function scrollFunction() {
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -286,14 +245,5 @@
         console.log('Messages: ',messages)
 
     })
-
-
-
-
-
-
-
-
-
 </script>
 {% endblock %}

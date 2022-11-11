@@ -5,9 +5,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import auth
 # Create your views here.
 
+# Home Page
 def index(request):
     return render(request, 'index.html')
 
+# Register User
 def registerUser(request):
     if(request.user.is_authenticated):
         return redirect('index')
@@ -42,7 +44,7 @@ def registerUser(request):
     else:
         return render(request, 'register.html')
 
-        
+# Login User
 def loginUser(request):
     if(request.user.is_authenticated):
         return redirect('index')
@@ -65,7 +67,11 @@ def loginUser(request):
     else:
         return render(request, 'login.html')
 
-
+# Logout User
 def logoutUser(request):
     auth.logout(request)
     return redirect('index')
+
+# User Profile
+def userProfile(request):
+    return render(request, 'profile.html')
