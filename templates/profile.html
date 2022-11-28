@@ -13,47 +13,172 @@
         <!-- Profile & Navigation Column-->
         <div class="col-md-4 p-4">
             <!-- Profile Image -->
-            <div class="img-container p-1 d-flex justify-content-center" style="border-radius:50%">
+            <div class="img-container p-1 d-flex justify-content-center" style="border-radius:50%;">
+                {% if request.user.gender == 'Male' %}
+                <img src="{% static 'images/male.jpg' %}" class="rounded-circle align-items-center"
+                     style="width:70%; pointer:cursor;"/>
+                {% elif request.user.gender == 'Female' %}
+                <img src="{% static 'images/female.jpg' %}" class="rounded-circle align-items-center"
+                     style="width:70%; pointer:cursor;"/>
+                {% else %}
                 <img src="{% static 'images/panda.jpg' %}" class="rounded-circle align-items-center"
-                     style="width:80%; pointer:cursor;"/>
+                     style="width:70%; pointer:cursor;"/>
+                {% endif %}
             </div>
             <!-- NavTabs -->
             <div class="navigation-container p-4">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
-                            aria-selected="true">Home
-                    </button>
-                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
+                    <!-- Update Profile -->
+                    <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
-                            aria-selected="false">Profile
+                            aria-selected="true">
+                        Profile
                     </button>
-                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages"
-                            aria-selected="false">Messages
+                    <!-- Adress Book -->
+                    <button class="nav-link" id="v-pills-adresses-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-adresses" type="button" role="tab" aria-controls="v-pills-adresses"
+                            aria-selected="false">
+                        Adresses
                     </button>
-                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings"
-                            aria-selected="false">Settings
+                    <!-- Orders History -->
+                    <button class="nav-link" id="v-pills-orders-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-orders" type="button" role="tab" aria-controls="v-pills-orders"
+                            aria-selected="false">
+                        Orders
+                    </button>
+                    <!-- Favourite Items -->
+                    <button class="nav-link" id="v-pills-fav-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-fav" type="button" role="tab" aria-controls="v-pills-fav"
+                            aria-selected="false">
+                        Favourites
+                    </button>
+                    <!-- Reviews History -->
+                    <button class="nav-link" id="v-pills-review-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review"
+                            aria-selected="false">
+                        Reviews
                     </button>
                 </div>
             </div>
         </div>
         <!-- Navigated Page Content Column -->
-        <div class="col-md-8 bg-warning">
+        <div class="col-md-8 p-5">
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                     aria-labelledby="v-pills-home-tab">
-                    1
+                <!-- Profile Form -->
+                <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                     aria-labelledby="v-pills-profile-tab">
+                    <!-- Form -->
+                    <form action="userProfile" method="post">
+                        {% csrf_token %}
+                        <fieldset class="border border-3 rounded p-5">
+                            <legend class="bg-primary text-center p-2 mb-3" style="border-radius: 14px; color: white;">
+                                {{request.user.full_name}}'s Profile
+                            </legend>
+                            <!-- Messages -->
+                            {% for message in messages %}
+                            <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
+                                {% if message.tags == 'alert-success' %}
+                                <i class="fa-sharp fa-solid fa-check"></i>
+                                {% else %}
+                                <i class="fa-sharp fa-solid fa-triangle-exclamation"></i>
+                                {% endif %}
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="fa-regular fa-envelope text-primary"></i>
+                                    Email
+                                </label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       value="{{request.user.email}}" disabled required>
+                            </div>
+                            <!-- Full Name -->
+                            <div class="mb-3">
+                                <label for="full_name" class="form-label">
+                                    <i class="fa-regular fa-user text-primary"></i>
+                                    Full Name
+                                </label>
+                                <input type="text" class="form-control" id="full_name" name="full_name"
+                                       value="{{request.user.full_name}}" required>
+                            </div>
+                            <!-- Gender -->
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fa-solid fa-venus-mars text-primary"></i>
+                                    Gender
+                                </label>
+                                <div class="input-group mb-3">
+                                    <select class="form-select" id="inputGroupSelect03"
+                                            aria-label="Example select with button addon" name="gender">
+                                        <option value="{{request.user.gender}}" selected hidden>
+                                            {{request.user.gender}}
+                                        </option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Sumbit Button -->
+                            <button type="submit" class="btn btn-primary float-end">Save</button>
+                        </fieldset>
+                    </form>
                 </div>
-                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                    2
+                <!-- Adress Book -->
+                <div class="tab-pane fade" id="v-pills-adresses" role="tabpanel" aria-labelledby="v-pills-adresses-tab">
+                    <!-- Container -->
+                    <div class="border border-2 rounded p-3">
+                        <!-- Row-->
+                        <div class="row">
+                            <!-- Add Adress -->
+                            <div class="col-lg-6">
+                                <div class="card border-secondary mb-3" style="height: 12rem">
+                                    <div class="card-header">Add Adress</div>
+                                    <div class="card-body text-secondary">
+                                        <p class="card-text text-center fs-1"><span style="cursor:pointer"
+                                                                                    title="Add Adress">+</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Adress 1 -->
+                            <div class="col-lg-6">
+                                <div class="card border-secondary mb-3" style="height: 12rem">
+                                    <div class="card-header">
+                                        Address 1
+                                        <ul class="list-unstyled d-flex float-end mb-0">
+                                            <li class="ms-1"><a href="#">Edit</a></li>
+                                            <li class="ms-1">|</li>
+                                            <li class="ms-1"><a href="#">Remove</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body text-secondary">
+                                        <p class="card-text">
+                                        <ul class="list-unstyled">
+                                            <li>Name: abhishek</li>
+                                            <li>Phone: 0123456789</li>
+                                            <li>Address: aidnkajnda iadakd uihi adoawjdiuhwdi adhiahd iah d</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    3
+                <!-- Orders History -->
+                <div class="tab-pane fade" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
+                    Orders
                 </div>
-                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    4
+                <!-- Favourite Items -->
+                <div class="tab-pane fade" id="v-pills-fav" role="tabpanel" aria-labelledby="v-pills-fav-tab">
+                    Favs
+                </div>
+                <!-- Reviews -->
+                <div class="tab-pane fade" id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab">
+                    Review
                 </div>
             </div>
         </div>
@@ -63,6 +188,7 @@
 
 {% block script %}
 <script>
+// Maintain Nav State
 $(function() {
     $('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (e) {
         localStorage.setItem('lastTab', $(this).attr('data-bs-target'));
@@ -74,5 +200,27 @@ $(function() {
         $('[data-bs-target="' + lastTab + '"]').tab('show');
     }
 });
+
+// Navbar Fix
+var myNav = document.getElementById('my-nav');
+myNav.classList.add("nav-scroll");
+myNav.classList.add("mb-4");
+
+// Enable button only if value is changed
+const inputs = document.querySelectorAll("input, select");
+for (const el of inputs){
+  el.oldValue = el.value + el.checked;
+}
+
+
+
+
+
+
+
+
+
+
+
 </script>
 {% endblock %}

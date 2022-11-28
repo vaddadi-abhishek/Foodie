@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-# from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import auth
+from django.http import HttpResponse
 # Create your views here.
-
 # Home Page
 def index(request):
     return render(request, 'index.html')
@@ -36,7 +35,7 @@ def registerUser(request):
             return redirect('registerUser')
         else:
             User = get_user_model()
-            user = User.objects.create_user(full_name=full_name, email=email, password=password)
+            user = User.objects.create_user(full_name=full_name, gender='None', email=email, password=password)
             user.save()
             print('User Created')
             auth.login(request, user)
@@ -74,4 +73,45 @@ def logoutUser(request):
 
 # User Profile
 def userProfile(request):
-    return render(request, 'profile.html')
+    if (request.user.is_authenticated == False):
+        return redirect('index')
+    elif(request.method == 'POST'):
+        full_name = request.POST.get('full_name')
+        gender = request.POST.get('gender')
+
+        if (full_name != request.user.full_name and gender != request.user.gender):
+            if (len(full_name) < 6):
+                messages.info(request, 'Full Name should be more than 6 characters')
+                return redirect(userProfile)
+            else:
+                User = get_user_model()
+                user = User.objects.get(pk=request.user.id)
+                user.full_name = full_name
+                user.gender = gender
+                user.save()
+                messages.success(request, 'Fullname and Gender are updated')
+                return redirect(userProfile)
+
+        elif(full_name != request.user.full_name and gender == request.user.gender):
+            if(len(full_name) < 6):
+                messages.info(request, 'Full Name should be more than 6 characters')
+                return redirect(userProfile)
+            else:
+                User = get_user_model()
+                user = User.objects.get(pk=request.user.id)
+                user.full_name = full_name
+                user.save()
+                messages.success(request, 'Full Name updated')
+                return redirect(userProfile)
+        elif (gender != request.user.gender and full_name == request.user.full_name):
+            User = get_user_model()
+            user = User.objects.get(pk=request.user.id)
+            user.gender = gender
+            user.save()
+            messages.success(request, 'Gender is updated')
+            return redirect(userProfile)
+        else:
+            messages.info(request, 'No changes are made')
+            return redirect(userProfile)
+    else:
+        return render(request, 'profile.html')
