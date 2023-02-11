@@ -135,33 +135,35 @@
                         <div class="row">
                             <!-- Add Adress -->
                             <div class="col-lg-6">
-                                <div class="card border-secondary mb-3" style="height: 12rem">
+                                <div class="card border-secondary mb-3" style="height: 13rem">
                                     <div class="card-header">Add Adress</div>
                                     <div class="card-body text-secondary">
-                                        <p class="card-text text-center fs-1"><span style="cursor:pointer"
-                                                                                    title="Add Adress">+</span></p>
+                                        <p class="card-text mt-4 text-center fs-1">
+                                            <i class="fa-solid fa-plus" title="Add Address" style="cursor:pointer;"></i>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <!-- Adress 1 -->
                             <div class="col-lg-6">
-                                <div class="card border-secondary mb-3" style="height: 12rem">
+                                <div class="card border-secondary mb-3" style="height: 13rem">
                                     <div class="card-header">
                                         Address 1
+                                        <span class="badge bg-secondary">Default</span>
+                                        <!-- Edit | Remove -->
                                         <ul class="list-unstyled d-flex float-end mb-0">
                                             <li class="ms-1"><a href="#">Edit</a></li>
                                             <li class="ms-1">|</li>
                                             <li class="ms-1"><a href="#">Remove</a></li>
                                         </ul>
                                     </div>
-                                    <div class="card-body text-secondary">
-                                        <p class="card-text">
+                                    <!-- Address detais -->
+                                    <div class="card-body text-secondary overflow-scroll">
                                         <ul class="list-unstyled">
-                                            <li>Name: abhishek</li>
-                                            <li>Phone: 0123456789</li>
-                                            <li>Address: aidnkajnda iadakd uihi adoawjdiuhwdi adhiahd iah d</li>
+                                            <li>Name: <b>abhishek</b></li>
+                                            <li>Phone: <b>0123456789</b></li>
+                                            <li>Address: H.No-12-14/1 opp mothee masjid, Chittinagar, Vijayawada, AP, pincode:520001</li>
                                         </ul>
-                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -211,16 +213,6 @@ const inputs = document.querySelectorAll("input, select");
 for (const el of inputs){
   el.oldValue = el.value + el.checked;
 }
-
-
-
-
-
-
-
-
-
-
 
 </script>
 {% endblock %}
