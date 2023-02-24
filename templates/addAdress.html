@@ -1,0 +1,152 @@
+{% block addAdress %}
+<!-- Container -->
+<div class="border border-2 rounded p-3">
+    <!-- Row-->
+    <div class="row">
+        <!-- Add Adress -->
+        <div class="col-lg-6">
+            <div class="card border-secondary mb-3" style="height: 13rem">
+                <div class="card-header">Add Adress</div>
+                <div class="card-body text-secondary">
+                    <p class="card-text mt-4 text-center fs-1">
+                        <i class="fa-solid fa-plus" data-bs-toggle="modal"
+                           data-bs-target="#exampleModal" title="Add Address"
+                           style="cursor:pointer;"></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Add Adress Modal-->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <!-- Add Adress Form -->
+                    <form action="addAdress" method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <!-- Name -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Name:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_full_name" class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- Mobile -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Mobile:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_mob_num" class="form-control" pattern="[6789]\d{9}" required>
+                                </div>
+                            </div>
+                            <!-- Address -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Address:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_address" class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- State -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">State:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="add_state" name="add_state"
+                                            aria-label="Example select with button addon" required>
+                                        <option selected hidden disabled>Choose...</option>
+                                        {% for state in state_context.states %}
+                                        <option value="{{ state.id }}">{{ state }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Town/City -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Town/City:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="add_city" name="add_city" aria-label="Example select with button addon" required>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Country -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Country:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_country" class="form-control"
+                                           placeholder="INDIA" value="INDIA" readonly>
+                                </div>
+                            </div>
+                            <!-- Pin Code -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Pin Code:</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" name="add_pincode" class="form-control" pattern="[1-9][0-9]{5}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Footer - Buttons -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Adress Book Block -->
+        {% block adressBook %}
+        {% include 'adressBook.html' %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scrip %}
+<script>
+  $(document).ready(function() {
+    $('#add_state').on('change', function() {
+      var state_id = $(this).val();
+      if (state_id) {
+        $.ajax({
+          url: '/get_cities/' + state_id + '/',
+          type: 'GET',
+          dataType: 'json',
+          success: function(city_data) {
+            $('#add_city').empty();
+            $.each(city_data, function(i, city) {
+              $('#add_city').append($('<option>', {
+                value: city.id,
+                text: city.name
+              }));
+            });
+          }
+        });
+      }
+    });
+  });
+
+</script>
+{% endblock%}

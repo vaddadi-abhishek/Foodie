@@ -7,5 +7,7 @@ urlpatterns = [
     path('registerUser', views.registerUser, name='registerUser'),
     path('loginUser', views.loginUser, name='loginUser'),
     path('userProfile', views.userProfile, name='userProfile'),
+    path('addAdress', views.addAdress, name='addAdress'),
+    path('get_cities/<int:state_id>/', views.get_cities, name='get_cities'),
     path('logoutUser', views.logoutUser, name='logoutUser'),
 ]

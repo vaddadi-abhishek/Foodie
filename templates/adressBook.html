@@ -1,0 +1,26 @@
+{% block adressBook %}
+<div class="col-lg-6">
+    <div class="card border-secondary mb-3" style="height: 13rem">
+        <div class="card-header">
+            Address 1
+            <span class="badge bg-secondary">Default</span>
+            <!-- Edit | Remove -->
+            <ul class="list-unstyled d-flex float-end mb-0">
+                <li class="ms-1"><a href="#">Edit</a></li>
+                <li class="ms-1">|</li>
+                <li class="ms-1"><a href="#">Remove</a></li>
+            </ul>
+        </div>
+        <!-- Address detais -->
+        <div class="card-body text-secondary overflow-scroll">
+            <ul class="list-unstyled">
+                <li>Name: <b>abhishek</b></li>
+                <li>Phone: <b>0123456789</b></li>
+                <li>Address: H.No-12-14/1 opp mothee masjid, Chittinagar, Vijayawada, AP,
+                    pincode:520001
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

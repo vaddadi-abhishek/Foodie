@@ -49,3 +49,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name: 'User'
         verbose_name_plural: 'Users'
+
+class State(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    state_code = models.CharField(max_length=2)
+    def __str__(self):
+        return self.name
+
+class City(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
