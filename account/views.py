@@ -135,11 +135,11 @@ def addAdress(request):
         city = request.POST.get('add_city')
         country = request.POST.get('add_country')
         pincode = request.POST.get('add_pincode')
-        data = [full_name, mobile, address, state,city, country, pincode]
+
+        states = State.objects.filter(id=state).values('state_code')[0]['state_code']
+        cities = City.objects.filter(id=city).values('name')[0]['name']
+        data = [full_name, mobile, address, states, cities, country, pincode]
         return HttpResponse(data)
-
-
-
 
 def get_cities(request, state_id):
     cities = City.objects.filter(state_id=state_id).values('id', 'name')
