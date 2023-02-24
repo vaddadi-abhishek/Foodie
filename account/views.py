@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import auth
-from account.models import State, City
+from account.models import State, City, address
 from django.http import HttpResponse
 from django.http import JsonResponse
 
@@ -130,7 +130,7 @@ def addAdress(request):
     elif(request.method == 'POST'):
         full_name = request.POST.get('add_full_name')
         mobile = request.POST.get('add_mob_num')
-        address = request.POST.get('add_address')
+        add_address = request.POST.get('add_address')
         state = request.POST.get('add_state')
         city = request.POST.get('add_city')
         country = request.POST.get('add_country')
@@ -138,8 +138,14 @@ def addAdress(request):
 
         states = State.objects.filter(id=state).values('state_code')[0]['state_code']
         cities = City.objects.filter(id=city).values('name')[0]['name']
-        data = [full_name, mobile, address, states, cities, country, pincode]
-        return HttpResponse(data)
+
+        # data = [request.user.id, full_name, mobile, add_address, states, cities, country, pincode]
+        address_obj = address.objects.create(name=full_name, mobile=mobile, address=add_address, state=states, city=cities, pincode=pincode, user_id=request.user.id)
+        address_obj.save()
+        print('data is saved')
+        return redirect(userProfile)
+    else:
+        return render(request, 'profile.html')
 
 def get_cities(request, state_id):
     cities = City.objects.filter(state_id=state_id).values('id', 'name')
