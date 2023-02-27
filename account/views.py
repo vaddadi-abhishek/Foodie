@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import auth
-from account.models import State, City, address
+from account.models import State, City, Address
 from django.http import HttpResponse
 from django.http import JsonResponse
 
@@ -119,9 +119,14 @@ def userProfile(request):
     else:
         state_obj = State.objects.all()
         cities_obj = City.objects.all()
+        adress_obj = Address.objects.filter(user_id=request.user.id)
+
         states = {'states':state_obj}
         cities = {'cities':cities_obj}
-        context = {'state_context':states, 'city_context':cities}
+        address = {'address':adress_obj}
+
+        context = {'state_context':states, 'city_context':cities, 'address_context':address}
+
         return render(request, 'profile.html', context)
 
 def addAdress(request):
@@ -130,7 +135,7 @@ def addAdress(request):
     elif(request.method == 'POST'):
         full_name = request.POST.get('add_full_name')
         mobile = request.POST.get('add_mob_num')
-        add_address = request.POST.get('add_address')
+        address = request.POST.get('add_address')
         state = request.POST.get('add_state')
         city = request.POST.get('add_city')
         country = request.POST.get('add_country')
@@ -140,12 +145,34 @@ def addAdress(request):
         cities = City.objects.filter(id=city).values('name')[0]['name']
 
         # data = [request.user.id, full_name, mobile, add_address, states, cities, country, pincode]
-        address_obj = address.objects.create(name=full_name, mobile=mobile, address=add_address, state=states, city=cities, pincode=pincode, user_id=request.user.id)
+        address_obj = Address.objects.create(name=full_name, mobile=mobile, address=address, state=states, city=cities, pincode=pincode, user_id=request.user.id)
         address_obj.save()
-        print('data is saved')
         return redirect(userProfile)
     else:
         return render(request, 'profile.html')
+
+def addressBook(request, address_id):
+    if (request.user.is_authenticated == False):
+        return redirect('index')
+    elif(request.method == 'POST'):
+        full_name = request.POST.get('add_full_name')
+        mobile = request.POST.get('add_mob_num')
+        address = request.POST.get('add_address')
+        state = request.POST.get('add_state')
+        city = request.POST.get('add_city')
+        country = request.POST.get('add_country')
+        pincode = request.POST.get('add_pincode')
+
+        states = State.objects.filter(id=state).values('state_code')[0]['state_code']
+        cities = City.objects.filter(id=city).values('name')[0]['name']
+
+        address_obj = Address.objects.filter(id=address_id).update(name=full_name, mobile=mobile, address=address, state=states, city=cities, pincode=pincode, user_id=request.user.id)
+        return redirect(userProfile)
+
+def removeAdress(request, address_id):
+    address_obj = Address.objects.filter(id=address_id)
+    address_obj.delete()
+    return redirect(userProfile)
 
 def get_cities(request, state_id):
     cities = City.objects.filter(state_id=state_id).values('id', 'name')

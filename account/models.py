@@ -64,7 +64,7 @@ class City(models.Model):
     def __str__(self):
         return self.name
 
-class address(models.Model):
+class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     mobile = models.CharField(max_length=15)

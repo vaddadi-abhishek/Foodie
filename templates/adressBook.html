@@ -1,26 +1,156 @@
 {% block adressBook %}
+{% for address in address_context.address %}
 <div class="col-lg-6">
     <div class="card border-secondary mb-3" style="height: 13rem">
+
         <div class="card-header">
-            Address 1
-            <span class="badge bg-secondary">Default</span>
+            Address - {{address.id}}
             <!-- Edit | Remove -->
             <ul class="list-unstyled d-flex float-end mb-0">
-                <li class="ms-1"><a href="#">Edit</a></li>
+                <li class="ms-1" style="color:blue; cursor:pointer; text-decoration-line: underline"
+                    data-bs-toggle="modal" data-bs-target="#editAddressModal{{address.id}}">
+                    Edit
+                </li>
                 <li class="ms-1">|</li>
-                <li class="ms-1"><a href="#">Remove</a></li>
+                <li class="ms-1">
+                    <a href="removeAdress/{{address.id}}">Remove</a>
+                </li>
             </ul>
         </div>
-        <!-- Address detais -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="editAddressModal{{address.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Address - {{address.id}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="addressBook/{{address.id}}" method="post">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <!-- Name -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Name:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_full_name" class="form-control" value="{{ address.name }}" required>
+                                </div>
+                            </div>
+                            <!-- Mobile -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Mobile:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_mob_num" class="form-control" pattern="[6789]\d{9}" value="{{ address.mobile }}" required>
+                                </div>
+                            </div>
+                            <!-- Address -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Address:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_address" class="form-control" value="{{ address.address }}" required>
+                                </div>
+                            </div>
+                            <!-- State -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">State:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="exist_state-{{address.id}}" name="add_state"
+                                            aria-label="Example select with button addon" required>
+                                        <option selected hidden disabled>Choose...</option>
+                                        {% for state in state_context.states %}
+                                        <option value="{{ state.id }}">{{ state }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Town/City -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Town/City:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="exist_city-{{address.id}}" name="add_city" aria-label="Example select with button addon" required>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Country -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-2">
+                                    <label class="col-form-label">Country:</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="add_country" class="form-control"
+                                           placeholder="INDIA" value="INDIA" readonly>
+                                </div>
+                            </div>
+                            <!-- Pin Code -->
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label">Pin Code:</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" name="add_pincode" class="form-control" pattern="[1-9][0-9]{5}" value="{{ address.pincode }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Footer - Buttons -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address -->
         <div class="card-body text-secondary overflow-scroll">
             <ul class="list-unstyled">
-                <li>Name: <b>abhishek</b></li>
-                <li>Phone: <b>0123456789</b></li>
-                <li>Address: H.No-12-14/1 opp mothee masjid, Chittinagar, Vijayawada, AP,
-                    pincode:520001
+                <li>Name: <b>{{ address.name }}</b></li>
+                <li>Phone: <b>{{ address.mobile }}</b></li>
+                <li>Address: {{ address.address }}, {{ address.city }}, {{ address.state }},
+                    pincode:{{ address.pincode }}
                 </li>
             </ul>
         </div>
     </div>
 </div>
+{% block scrip %}
+<script>
+  $(document).ready(function() {
+    $('#exist_state-{{address.id}}').on('change', function() {
+      var state_id = $(this).val();
+      if (state_id) {
+        $.ajax({
+          url: '/get_cities/' + state_id + '/',
+          type: 'GET',
+          dataType: 'json',
+          success: function(city_data) {
+            $('#exist_city-{{address.id}}').empty();
+            $.each(city_data, function(i, city) {
+              $('#exist_city-{{address.id}}').append($('<option>', {
+                value: city.id,
+                text: city.name
+              }));
+            });
+          }
+        });
+      }
+    });
+  });
+</script>
+{% endblock%}
+{% endfor %}
 {% endblock %}
