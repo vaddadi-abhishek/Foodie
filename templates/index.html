@@ -19,10 +19,10 @@
         <!-- dropdown button -->
         <div class="btn-group">
             <select class="form-select" aria-label="Disabled select example">
-                <option selected>Location</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected>{{ state }}</option>
+                {% for city in cities.city_obj %}
+                <option value="1">{{ city.name }}</option>
+                {% endfor %}
             </select>
         </div>
         <!-- Search input bar -->
@@ -265,6 +265,7 @@
     $(".dropdown-menu-script li a").click(function() {
         $(".btn:first-child").html($(this).text()+' <span class="caret"></span>');
     })
+
 
 
 </script>

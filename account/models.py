@@ -74,3 +74,4 @@ class Address(models.Model):
     pincode = models.CharField(max_length=10)
     class Meta:
         db_table = 'account_address'
+

@@ -5,35 +5,60 @@ from django.contrib.auth.models import auth
 from account.models import State, City, Address
 from django.http import HttpResponse
 from django.http import JsonResponse
+import requests
+
 
 # Create your views here.
+def get_ip():
+    # response = requests.get('https://api64.ipify.org?format=json').json()
+    # return response["49.205.108.48"]
+
+    # returning ip manually
+    return '49.205.108.48'
+
+def user_location():
+    ip_address = get_ip()
+    response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
+    location_data = {
+        "state": response.get("region"),
+    }
+    return location_data
+
+
 # Home Page
 def index(request):
+    location = user_location()
+    stateId = State.objects.filter(name=location['state']).values('id')[0]['id']
+    city_obj = City.objects.filter(state_id=stateId).values('name')
+
+    print(city_obj)
+
     return render(request, 'index.html')
+
 
 # Register User
 def registerUser(request):
-    if(request.user.is_authenticated):
+    if (request.user.is_authenticated):
         return redirect('index')
-    elif(request.method=='POST'):
+    elif (request.method == 'POST'):
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
-        if(full_name.isspace()):
+        if (full_name.isspace()):
             messages.info(request, 'Full Name should not be empty')
             return redirect('registerUser')
-        elif(len(full_name) < 6):
+        elif (len(full_name) < 6):
             messages.info(request, 'Full Name should not be less than 6 character long')
             return redirect('registerUser')
-        elif(password.isspace() or (' ' in password) == True):
+        elif (password.isspace() or (' ' in password) == True):
             messages.info(request, 'password should not contain any spaces')
             return redirect('registerUser')
-        elif(len(password) < 8):
+        elif (len(password) < 8):
             messages.info(request, 'Password should be min 8 characters long')
             return redirect('registerUser')
-        elif(password != confirm_password):
+        elif (password != confirm_password):
             messages.info(request, 'Password and Confirm password must be same')
             return redirect('registerUser')
         else:
@@ -46,12 +71,13 @@ def registerUser(request):
     else:
         return render(request, 'register.html')
 
+
 # Login User
 def loginUser(request):
-    if(request.user.is_authenticated):
+    if (request.user.is_authenticated):
         return redirect('index')
 
-    elif(request.method == 'POST'):
+    elif (request.method == 'POST'):
         email = request.POST.get('email')
         password = request.POST.get('password')
         # data = [email, password]
@@ -69,16 +95,18 @@ def loginUser(request):
     else:
         return render(request, 'login.html')
 
+
 # Logout User
 def logoutUser(request):
     auth.logout(request)
     return redirect('index')
 
+
 # User Profile
 def userProfile(request):
     if (request.user.is_authenticated == False):
         return redirect('index')
-    elif(request.method == 'POST'):
+    elif (request.method == 'POST'):
         full_name = request.POST.get('full_name')
         gender = request.POST.get('gender')
 
@@ -95,8 +123,8 @@ def userProfile(request):
                 messages.success(request, 'Fullname and Gender are updated')
                 return redirect(userProfile)
 
-        elif(full_name != request.user.full_name and gender == request.user.gender):
-            if(len(full_name) < 6):
+        elif (full_name != request.user.full_name and gender == request.user.gender):
+            if (len(full_name) < 6):
                 messages.info(request, 'Full Name should be more than 6 characters')
                 return redirect(userProfile)
             else:
@@ -121,18 +149,19 @@ def userProfile(request):
         cities_obj = City.objects.all()
         adress_obj = Address.objects.filter(user_id=request.user.id)
 
-        states = {'states':state_obj}
-        cities = {'cities':cities_obj}
-        address = {'address':adress_obj}
+        states = {'states': state_obj}
+        cities = {'cities': cities_obj}
+        address = {'address': adress_obj}
 
-        context = {'state_context':states, 'city_context':cities, 'address_context':address}
+        context = {'state_context': states, 'city_context': cities, 'address_context': address}
 
         return render(request, 'profile.html', context)
+
 
 def addAdress(request):
     if (request.user.is_authenticated == False):
         return redirect('index')
-    elif(request.method == 'POST'):
+    elif (request.method == 'POST'):
         full_name = request.POST.get('add_full_name')
         mobile = request.POST.get('add_mob_num')
         address = request.POST.get('add_address')
@@ -145,16 +174,18 @@ def addAdress(request):
         cities = City.objects.filter(id=city).values('name')[0]['name']
 
         # data = [request.user.id, full_name, mobile, add_address, states, cities, country, pincode]
-        address_obj = Address.objects.create(name=full_name, mobile=mobile, address=address, state=states, city=cities, pincode=pincode, user_id=request.user.id)
+        address_obj = Address.objects.create(name=full_name, mobile=mobile, address=address, state=states, city=cities,
+                                             pincode=pincode, user_id=request.user.id)
         address_obj.save()
         return redirect(userProfile)
     else:
         return render(request, 'profile.html')
 
+
 def addressBook(request, address_id):
     if (request.user.is_authenticated == False):
         return redirect('index')
-    elif(request.method == 'POST'):
+    elif (request.method == 'POST'):
         full_name = request.POST.get('add_full_name')
         mobile = request.POST.get('add_mob_num')
         address = request.POST.get('add_address')
@@ -166,13 +197,17 @@ def addressBook(request, address_id):
         states = State.objects.filter(id=state).values('state_code')[0]['state_code']
         cities = City.objects.filter(id=city).values('name')[0]['name']
 
-        address_obj = Address.objects.filter(id=address_id).update(name=full_name, mobile=mobile, address=address, state=states, city=cities, pincode=pincode, user_id=request.user.id)
+        address_obj = Address.objects.filter(id=address_id).update(name=full_name, mobile=mobile, address=address,
+                                                                   state=states, city=cities, pincode=pincode,
+                                                                   user_id=request.user.id)
         return redirect(userProfile)
+
 
 def removeAdress(request, address_id):
     address_obj = Address.objects.filter(id=address_id)
     address_obj.delete()
     return redirect(userProfile)
+
 
 def get_cities(request, state_id):
     cities = City.objects.filter(state_id=state_id).values('id', 'name')
