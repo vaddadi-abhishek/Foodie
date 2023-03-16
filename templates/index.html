@@ -14,6 +14,22 @@
     <source src="{% static 'videos/Foodie.mp4' %}" type="video/mp4">
 </video>
 
+<div class="search-bar">
+    <div class="input-group">
+        <!-- dropdown button -->
+        <div class="btn-group">
+            <select class="form-select" aria-label="Disabled select example">
+                <option selected>Location</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <!-- Search input bar -->
+        <input type="text" class="form-control" placeholder="Search">
+    </div>
+</div>
+
 <!-- Featured Food Items -->
 <section id="features-food">
     <div class="text-center text-primary featured-food-title m-4">Featured</div>
@@ -243,7 +259,13 @@
 
         alert(messages)
         console.log('Messages: ',messages)
-
     })
+
+    // dropdown
+    $(".dropdown-menu-script li a").click(function() {
+        $(".btn:first-child").html($(this).text()+' <span class="caret"></span>');
+    })
+
+
 </script>
 {% endblock %}
