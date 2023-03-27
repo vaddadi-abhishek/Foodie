@@ -3,38 +3,48 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import auth
 from account.models import State, City, Address
-from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import HttpResponse
+from django.urls import reverse
 import requests
 
 
 # Create your views here.
-def get_ip():
-    # response = requests.get('https://api64.ipify.org?format=json').json()
-    # return response["49.205.108.48"]
-
-    # returning ip manually
-    return '49.205.108.48'
-
+# Getting User Location
 def user_location():
-    ip_address = get_ip()
-    response = requests.get(f'https://ipapi.co/{ip_address}/json/').json()
-    location_data = {
-        "state": response.get("region"),
-    }
-    return location_data
+    try:
+        response = requests.get('https://ipinfo.io/json')
+        location_data = response.json()
+        return location_data
+    except Exception as e:
+        print(e)
+        return None
 
+def location_details():
+    location = user_location()
+    states = State.objects.all()
+    cities = City.objects.all()
+
+    stateId = State.objects.filter(name=location['region']).values('id')[0]['id']
+    city = City.objects.filter(state_id=stateId).values('name')
+    city_list = list(city)
+
+    context = {'states': states, 'cities': cities, 'city_list': city_list, 'location': location}
+
+    return context
 
 # Home Page
 def index(request):
-    location = user_location()
-    stateId = State.objects.filter(name=location['state']).values('id')[0]['id']
-    city_obj = City.objects.filter(state_id=stateId).values('name')
+    context = location_details()
+    if not context['location']['city']:
+        return render(request, 'index.html', context)
+    else:
+        return redirect(reverse('home', args=[context['location']['region'],context['location']['city']]))
 
-    print(city_obj)
-
-    return render(request, 'index.html')
-
+# home
+def home(request, state, city):
+    context = location_details()
+    return render(request, 'index.html', context)
 
 # Register User
 def registerUser(request):
@@ -157,7 +167,7 @@ def userProfile(request):
 
         return render(request, 'profile.html', context)
 
-
+# addAdress
 def addAdress(request):
     if (request.user.is_authenticated == False):
         return redirect('index')
@@ -181,7 +191,7 @@ def addAdress(request):
     else:
         return render(request, 'profile.html')
 
-
+# adressBook
 def addressBook(request, address_id):
     if (request.user.is_authenticated == False):
         return redirect('index')
@@ -202,13 +212,13 @@ def addressBook(request, address_id):
                                                                    user_id=request.user.id)
         return redirect(userProfile)
 
-
+# removeAdress
 def removeAdress(request, address_id):
     address_obj = Address.objects.filter(id=address_id)
     address_obj.delete()
     return redirect(userProfile)
 
-
+# getCities
 def get_cities(request, state_id):
     cities = City.objects.filter(state_id=state_id).values('id', 'name')
     city_data = list(cities)

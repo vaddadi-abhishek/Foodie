@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
 {% load static %}
 
 {% block styles %} {% static 'css/index.css' %} {% endblock %}
@@ -14,21 +15,22 @@
     <source src="{% static 'videos/Foodie.mp4' %}" type="video/mp4">
 </video>
 
+{% if request.path != '/'%}
 <div class="search-bar">
     <div class="input-group">
         <!-- dropdown button -->
         <div class="btn-group">
             <select class="form-select" aria-label="Disabled select example">
-                <option selected>{{ state }}</option>
-                {% for city in cities.city_obj %}
-                <option value="1">{{ city.name }}</option>
-                {% endfor %}
+                <option>
+                    <p>{{request.path|split:'/'|last}}</p>
+                </option>
             </select>
         </div>
         <!-- Search input bar -->
-        <input type="text" class="form-control" placeholder="Search">
+        <input type="text" class="form-control" placeholder="Search for Restaurants in {{request.path|split:'/'|last}}">
     </div>
 </div>
+{% endif %}
 
 <!-- Featured Food Items -->
 <section id="features-food">
@@ -102,7 +104,8 @@
                      class="d-block w-100 offer-img" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="https://t.ly/DJy7" class="d-block w-100 offer-img" alt="...">
+                <img src="https://bk-ca-prd.s3.amazonaws.com/sites/burgerking.ca/files/03162-77%20DIG%20FreshOfferBanner%20KMD%201000x550_EN_CR_1.jpg"
+                     class="d-block w-100 offer-img" alt="...">
             </div>
             <div class="carousel-item">
                 <img src="https://d4t7t8y8xqo0t.cloudfront.net/resized/1080X400/pages%2F1051%2Fimage20201109063955.jpg"
@@ -165,7 +168,7 @@
                     <li><a href="#!">Offer Terms</a></li>
                     <li><a href="#!">Report issues</a></li>
                     <li><a href="#!">Work with Us</a></li>
-                    <li><a href="#!">Partnet with Us</a></li>
+                    <li><a href="partner">Partnet with Us</a></li>
                     <li><a href="#!">Help & Supprot</a></li>
                 </ul>
             </div>
@@ -217,6 +220,28 @@
         </div>
     </div>
 
+    <!-- Footer States Links -->
+    <div class="fs-4 text-uppercase text-center text-primary fw-bolder text-decoration-underline">
+        State <span class="text-light fs-2">&</span> Cities
+    </div>
+    <div class="p-4 d-flex flex-wrap justify-content-evenly align-items-center">
+        <!-- Footer States-->
+        {% for state in states %}
+        <div class="footer-links-1">
+            <div class="footer-head ps-4 text-uppercase">{{ state }}</div>
+            <div class="footer-links">
+                <ul class="ps-4">
+                    {% for city in cities %}
+                    {% if city.state_id == state.id %}
+                    <li><a href="/{{state}}/{{city}}">{{ city }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 </section>
 {% endblock %}
 
@@ -265,7 +290,6 @@
     $(".dropdown-menu-script li a").click(function() {
         $(".btn:first-child").html($(this).text()+' <span class="caret"></span>');
     })
-
 
 
 </script>
