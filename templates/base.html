@@ -39,7 +39,7 @@
 <nav class="navbar navbar-expand-lg" id="my-nav">
     <div class="container">
         <h1 class="navbar-brand text-primary">
-            <a class="text-decoration-none" href="/">
+            <a class="text-decoration-none" href="{% url 'index' %}">
                 Foodie
             </a>
         </h1>
@@ -73,25 +73,25 @@
                         </button>
                         <!-- Drop Down Menu -->
                         <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="/userProfile">{{request.user.full_name}}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'userProfile' %}">{{request.user.full_name}}</a></li>
                             <li><a class="dropdown-item" href="#">Orders</a></li>
                             <li><a class="dropdown-item" href="#">Adresses</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="/logoutUser">Logout</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logoutUser' %}">Logout</a></li>
                         </ul>
                     </div>
                 </li>
                 {% else %}
                 <!-- Login Button -->
                 <li class="nav-item">
-                    <a class="nav-link fs-5" href="/loginUser">Login</a>
+                    <a class="nav-link fs-5" href="{% url 'loginUser' %}">Login</a>
                 </li>
                 <!-- Signup Button -->
                 <li class="nav-item">
-                    <a class="nav-link fs-5" href="/registerUser">SignUp</a>
+                    <a class="nav-link fs-5" href="{% url 'registerUser' %}">SignUp</a>
                 </li>
                 {% endif %}
             </ul>

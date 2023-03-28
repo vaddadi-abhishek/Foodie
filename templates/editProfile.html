@@ -1,6 +1,6 @@
 {% block editProfile %}
 <!-- Form -->
-<form action="userProfile" method="post">
+<form action="{% url 'userProfile' %}" method="post">
     {% csrf_token %}
     <fieldset class="border border-3 rounded p-5">
         <legend class="bg-primary text-center p-2 mb-3" style="border-radius: 14px; color: white;">

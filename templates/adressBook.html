@@ -13,7 +13,8 @@
                 </li>
                 <li class="ms-1">|</li>
                 <li class="ms-1">
-                    <a href="/removeAdress/{{address.id}}">Remove</a>
+<!--                    <a href="/removeAdress/{{address.id}}">Remove</a>-->
+                    <a href="{% url 'removeAdress' address_id=address.id %}">Remove</a>
                 </li>
             </ul>
         </div>
@@ -27,7 +28,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Address - {{address.id}}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="addressBook/{{address.id}}" method="post">
+                    <form action="{% url 'addressBook' address_id=address.id %}" method="post">
                         {% csrf_token %}
                         <div class="modal-body">
                             <!-- Name -->

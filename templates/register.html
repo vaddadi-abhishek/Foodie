@@ -19,7 +19,7 @@
     <div class="form-content">
         <div class="form-container p-4">
             <h3 class="text-center mb-4">Sign<span class="text-primary">Up</span></h3>
-            <form action="registerUser" method="post">
+            <form action="{% url 'registerUser' %}" method="post">
                 {% csrf_token %}
                 {% for message in messages %}
                 <div class="alert alert-warning" role="alert">
@@ -58,7 +58,7 @@
                     <button class="btn btn-primary" type="submit">SignUp</button>
                 </div>
                 <div class="mb-3">
-                    <p>Already have an account? <span class="bold"><a href="/loginUser">signin</a></span>
+                    <p>Already have an account? <span class="bold"><a href="{% url 'loginUser' %}">signin</a></span>
                     </p>
                 </div>
             </form>
