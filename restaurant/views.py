@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 # Create your views here.
 def registerRestaurant(request):
-    return render(request, 'register.html')
+    return render(request, 'registerRestaurant.html')
