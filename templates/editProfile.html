@@ -59,15 +59,3 @@
     </fieldset>
 </form>
 {% endblock %}
-
-{% block script %}
-<script>
-// Enable button only if value is changed
-
-const inputs = document.querySelectorAll("input, select");
-for (const el of inputs){
-  el.oldValue = el.value + el.checked;
-}
-
-</script>
-{% endblock %}

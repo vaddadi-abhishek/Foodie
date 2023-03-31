@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.foodie-logo {
+    font-family: Lobster, 'cursive';
+}
 
 .container{
     min-height:100vh;
@@ -37,7 +42,6 @@
 }
 
 /**************************** Left-side-start   *********************************************/
-
 .steps-content p {
     font-size:12px;
     margin-top:15px;
@@ -51,7 +55,7 @@
     counter-reset:container 0;
 }
 
-.progress-bar li{
+.form-progress-bar li{
     position:relative;
     margin-left:40px;
     margin-top:50px;
@@ -59,7 +63,7 @@
     color:#4f6581;
 }
 
-.progress-bar li::before{
+.form-progress-bar li::before{
     content:counter(container);
     line-height:25px;
     text-align:center;
@@ -74,7 +78,7 @@
     background-color:#304767;
 }
 
-.progress-bar li::after{
+.form-progress-bar li::after{
     content: '';
     position: absolute;
     height: 90px;
@@ -85,20 +89,20 @@
     top: -70px;
 }
 
-.progress-bar li.active::after{
+.form-progress-bar li.active::after{
     background-color: #fff;
 }
 
-.progress-bar li:first-child:after{
+.form-progress-bar li:first-child:after{
   display:none;
 }
 
-.progress-bar li.active::before{
+.form-progress-bar li.active::before{
     color:#fff;
     border:1px solid #fff;
 }
 
-.progress-bar li.active{
+.form-progress-bar li.active{
     color:#fff;
 }
 

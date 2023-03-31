@@ -23,86 +23,193 @@
                     </div>
                     <div class="steps-content mt-4 text-light">
                         <h3>Step <span class="step-number">1</span></h3>
-                        <p class="step-number-content active">Enter your personal information</p>
-                        <p class="step-number-content d-none">Get to know better by adding your diploma,certificate and
-                            education life.</p>
-                        <p class="step-number-content d-none">Help companies get to know you better by telling then
-                            about your past experiences.</p>
+                        <p class="step-number-content active">Enter your personal information.</p>
+                        <p class="step-number-content d-none">Tell us more about your business.</p>
+                        <p class="step-number-content d-none">Upload the Government approved License.</p>
                         <p class="step-number-content d-none">Add your profile piccture and let companies find youy
                             fast.</p>
                     </div>
                     <ul class="form-progress-bar">
                         <li class="active">Personal Information</li>
-                        <li>Education</li>
-                        <li>Work Experience</li>
-                        <li>User Photo</li>
+                        <li>Restaurant Details</li>
+                        <li>License</li>
+                        <li>Photo Uploads</li>
                     </ul>
                 </div>
-
                 <!-- Right Side -->
                 <div class="right-side">
-                    <!-- Persinal Info -->
-                    <div class="main p-4 active">
-                        <div class="text mt-3">
-                            <h2>Your <span class="text-primary">Personal Information</span></h2>
-                            <p class="text-secondary">Enter your personal information</p>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                                    <label for="floatingInput">Email address</label>
+                    <form action="{% url 'registerRestaurant' %}" method="POST">
+                        {% csrf_token %}
+                        <!-- Persinal Info -->
+                        <div class="main p-4 active">
+                            <div class="text mt-3">
+                                <h2>Your <span class="text-primary">Personal Information</span></h2>
+                                <p class="text-secondary">Enter your personal information</p>
+                            </div>
+                            <!-- Email -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" name="email" class="form-control"
+                                               placeholder="Your Email Address" required>
+                                        <label>Your Email address</label>
+                                        <span class="error-msg"></span>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- Full Name -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="full_name" class="form-control"
+                                               placeholder="Your Full Name" required>
+                                        <label>Your Full Name</label>
+                                        <span class="error-msg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Mobile Number -->
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" name="mobile_num" class="form-control"
+                                               placeholder="Your Mobile Number" required>
+                                        <label>Your Mobile Number</label>
+                                        <span class="error-msg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Next button-->
+                            <div class="buttons">
+                                <button type="button" class="btn btn-primary next_button">Next Step</button>
+                            </div>
                         </div>
-                        <!-- Next button-->
-                        <div class="buttons">
-                            <button type="button" class="btn btn-primary next_button">Next Step</button>
+                        <!-- Restaurant Details -->
+                        <div class="main p-4">
+                            <div class="text mt-3">
+                                <h2>Your <span class="text-primary">Restaurant Details</span></h2>
+                                <p class="text-secondary">Enter your Restaurant details.</p>
+                            </div>
+                            <!-- Restaurant Name -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="restaurant_name" class="form-control"
+                                               placeholder="Your Restaurant Name" required>
+                                        <label>Your Restaurant Name</label>
+                                        <span class="error-msg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Address -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="restaurant_address" class="form-control"
+                                               placeholder="Your Restaurant Address" required>
+                                        <label>Your Restaurant Address</label>
+                                        <span class="error-msg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- State -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select border border-red" id="exist_state-{{address.id}}" name="add_state" required>
+                                            <option selected hidden disabled value="">Choose...</option>
+                                            {% for state in states %}
+                                            <option value="{{ state.id }}">{{ state }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <label>State</label>
+                                        <span class="error-msg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- City -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="exist_city-{{address.id}}" name="add_city" required>
+
+                                        </select>
+                                        <label>City</label>
+                                        <span class="error-msg"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Buttons -->
+                            <div class="buttons">
+                                <button type="button" class="btn btn-secondary back_button">Back Step</button>
+                                <button type="button" class="btn btn-primary next_button">Next Step</button>
+                            </div>
                         </div>
-                    </div>
-                    <!-- -->
-                    <div class="main p-4">
-                        <div class="text mt-3">
-                            <h2>Education</h2>
-                            <p class="text-secondary">Inform companies about your education life.</p>
+                        <!-- License -->
+                        <div class="main p-4">
+                            <div class="text mt-3">
+                                <h2>Upload <span class="text-primary">Restaurant License</span></h2>
+                                <p class="text-secondary">Upload the Government approved Licenses for validation</p>
+                            </div>
+                            <!-- FSSAI License -->
+                            <div class="mb-3">
+                                <label class="form-label"> FSSAI License: </label>
+                                <input class="form-control form-control-sm" name="fssai" type="file" required>
+                                <span class="error-msg"></span>
+                            </div>
+                            <!-- Eating House License -->
+                            <div class="mb-3">
+                                <label class="form-label"> Eating House License: <span class="text-secondary">(optional)</span>
+                                </label>
+                                <input class="form-control form-control-sm" name="eat_house" type="file">
+                            </div>
+                            <!-- GST registration Certificate -->
+                            <div class="mb-3">
+                                <label class="form-label"> GST registration Certificate: <span class="text-secondary">(optional)</span></label>
+                                <input class="form-control form-control-sm" name="gst" type="file">
+                            </div>
+                            <!-- NOC Fire Department -->
+                            <div class="mb-3">
+                                <label class="form-label"> NOC Fire Department:<span class="text-secondary">(optional)</span>
+                                </label>
+                                <input class="form-control form-control-sm" name="noc_fire" type="file">
+                            </div>
+                            <!-- Buttons -->
+                            <div class="buttons">
+                                <button type="button" class="btn btn-secondary back_button">Back Step</button>
+                                <button type="button" class="btn btn-primary next_button">Next Step</button>
+                            </div>
                         </div>
-                        <div class="buttons">
-                            <button type="button" class="btn btn-secondary back_button">Back Step</button>
-                            <button type="button" class="btn btn-primary next_button">Next Step</button>
+                        <!-- Restaurant Images -->
+                        <div class="main p-4">
+                            <div class="text mt-3">
+                                <h2>Upload <span class="text-primary">Restaurant Images</span></h2>
+                                <p class="text-secondary">Upload your Restaurant Images.</p>
+                            </div>
+                            <!-- Images -->
+                            <div class="mb-3">
+                                <label for="formFileMultiple" class="form-label">Restaurant Images</label>
+                                <input class="form-control" name="restaurant_images" type="file" id="formFileMultiple"
+                                       required>
+                                <span class="error-msg"></span>
+                            </div>
+                            <!-- Buttons -->
+                            <div class="buttons">
+                                <button type="button" class="btn btn-secondary back_button">Back Step</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                    <!-- -->
-                    <div class="main p-4">
-                        <div class="text mt-3">
-                            <h2>Work Experiences</h2>
-                            <p class="text-secondary">Can you talk about your past work experience?</p>
+                    </form>
+                    <!-- Congrats -->
+                    <div class="main p-5 text-center" style="height:100%">
+                        <i class="fa-solid fa-square-check text-primary mb-4" style="font-size:100px"></i>
+                        <div class="congrats">
+                            <h2 class="text-center mb-3">Congratulations<span class="text-primary">!</span></h2>
+                            <p class="p-4">
+                                Thank You. Your Information have been submitted successfully. We will Contact You Soon.
+                            </p>
                         </div>
-                        <div class="buttons">
-                            <button type="button" class="btn btn-secondary back_button">Back Step</button>
-                            <button type="button" class="btn btn-primary next_button">Next Step</button>
-                        </div>
-                    </div>
-                    <!-- -->
-                    <div class="main p-4">
-                        <div class="text mt-3">
-                            <h2>User Photo</h2>
-                            <p class="text-secondary">Upload your profile picture and share yourself.</p>
-                        </div>
-                        <div class="buttons">
-                            <button type="button" class="btn btn-secondary back_button">Back Step</button>
-                            <button type="button" class="btn btn-primary next_button">Next Step</button>
-                        </div>
-                    </div>
-                    <div class="main">
-                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                        </svg>
-                        <div class="text-center congrats">
-                            <h2>Congratulations!</h2>
-                            <p>Thanks Mr./Mrs. <span class="shown_name"></span> your information have been submitted
-                                successfully for the future reference we will contact you soon.</p>
-                        </div>
+                        <a class="text-primary" href="/">Go Back to Home Page</a>
                     </div>
                 </div>
             </div>
@@ -117,10 +224,11 @@
 <script>
 var next_click=document.querySelectorAll(".next_button");
 var main_form=document.querySelectorAll(".main");
-var step_list = document.querySelectorAll(".progress-bar li");
+var step_list = document.querySelectorAll(".form-progress-bar li");
 var num = document.querySelector(".step-number");
 let formnumber=0;
 
+//      Next Button
 next_click.forEach(function(next_click_form){
     next_click_form.addEventListener('click',function(){
         if(!validateform()){
@@ -133,6 +241,7 @@ next_click.forEach(function(next_click_form){
     });
 });
 
+//      Back Button
 var back_click=document.querySelectorAll(".back_button");
 back_click.forEach(function(back_click_form){
     back_click_form.addEventListener('click',function(){
@@ -143,32 +252,19 @@ back_click.forEach(function(back_click_form){
     });
 });
 
-var username=document.querySelector("#user_name");
-var shownname=document.querySelector(".shown_name");
+//      content Change
+var step_num_content=document.querySelectorAll(".step-number-content");
 
-
-var submit_click=document.querySelectorAll(".submit_button");
-submit_click.forEach(function(submit_click_form){
-    submit_click_form.addEventListener('click',function(){
-       shownname.innerHTML= username.value;
-       formnumber++;
-       updateform();
+function contentchange(){
+    step_num_content.forEach(function(content){
+        content.classList.remove('active');
+        content.classList.add('d-none');
     });
-});
+    step_num_content[formnumber].classList.add('active');
+    step_num_content[formnumber].classList.remove('d-none');
+}
 
-var heart=document.querySelector(".fa-heart");
-heart.addEventListener('click',function(){
-   heart.classList.toggle('heart');
-});
-
-
-var share=document.querySelector(".fa-share-alt");
-share.addEventListener('click',function(){
-   share.classList.toggle('share');
-});
-
-
-
+//      Update content
 function updateform(){
     main_form.forEach(function(mainform_number){
         mainform_number.classList.remove('active');
@@ -176,14 +272,8 @@ function updateform(){
     main_form[formnumber].classList.add('active');
 }
 
+//     Progress Bar
 function progress_forward(){
-    // step_list.forEach(list => {
-
-    //     list.classList.remove('active');
-
-    // });
-
-
     num.innerHTML = formnumber+1;
     step_list[formnumber].classList.add('active');
 }
@@ -194,33 +284,66 @@ function progress_backward(){
     num.innerHTML = form_num;
 }
 
-var step_num_content=document.querySelectorAll(".step-number-content");
-
- function contentchange(){
-     step_num_content.forEach(function(content){
-        content.classList.remove('active');
-        content.classList.add('d-none');
-     });
-     step_num_content[formnumber].classList.add('active');
- }
-
-
+// Validate Forms
 function validateform(){
     validate=true;
-    var validate_inputs=document.querySelectorAll(".main.active input");
+    var validate_inputs=document.querySelectorAll(".main.p-4.active input, .main.p-4.active select");
     validate_inputs.forEach(function(vaildate_input){
-        vaildate_input.classList.remove('warning');
-        if(vaildate_input.hasAttribute('require')){
+
+        vaildate_input.classList.remove('border', 'border-danger');
+        var errorMessage = vaildate_input.parentElement.querySelector('.error-msg');
+        if(errorMessage) {
+            errorMessage.textContent = '';
+        }
+        if(vaildate_input.hasAttribute('required')){
             if(vaildate_input.value.length==0){
                 validate=false;
-                vaildate_input.classList.add('warning');
+                vaildate_input.classList.add('border', 'border-danger');
+                errorMessage.textContent = 'This Field is required';
+            }
+        }
+        if(vaildate_input.type === 'email') {
+            var emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if(!emailRegex.test(vaildate_input.value)){
+                validate=false;
+                vaildate_input.classList.add('border', 'border-danger');
+                errorMessage.textContent = 'Please enter a valid email address';
+            }
+        }
+        if(vaildate_input.type === 'tel') {
+            var phoneRegex = /^[6789]\d{9}$/;
+            if(!phoneRegex.test(vaildate_input.value)){
+                validate=false;
+                vaildate_input.classList.add('border', 'border-danger');
+                errorMessage.textContent = 'Please enter a valid Mobile Number';
             }
         }
     });
     return validate;
-
 }
 
 
+// States and Cities
+$(document).ready(function() {
+    $('#exist_state-{{address.id}}').on('change', function() {
+      var state_id = $(this).val();
+      if (state_id) {
+        $.ajax({
+          url: '/get_cities/' + state_id + '/',
+          type: 'GET',
+          dataType: 'json',
+          success: function(city_data) {
+            $('#exist_city-{{address.id}}').empty();
+            $.each(city_data, function(i, city) {
+              $('#exist_city-{{address.id}}').append($('<option>', {
+                value: city.id,
+                text: city.name
+              }));
+            });
+          }
+        });
+      }
+    });
+  });
 </script>
 {% endblock %}

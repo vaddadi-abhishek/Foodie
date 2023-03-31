@@ -263,36 +263,5 @@
             myNav.classList.remove("nav-scroll");
         }
     }
-
-    // Forms
-    const form = document.getElementById('reg-form')
-    const regFullName = document.getElementById('reg-name')
-    const regEmail = document.getElementById('reg-email')
-    const regPwd = document.getElementById('reg-pwd')
-    const regConfirmPwd = document.getElementById('reg-con-pwd')
-    const msgError = document.getElementById('form-error')
-
-    form.addEventListener('submit', (e) => {
-        let messages = []
-
-        if(regFullName.value === '' || regFullName.value == null) {
-            messages.push('Name is required')
-        }
-
-        if(messages.length > 0) {
-            e.preventDefault()
-            msgError.innerHTML = messages.join(',');
-        }
-
-        alert(messages)
-        console.log('Messages: ',messages)
-    })
-
-    // dropdown
-    $(".dropdown-menu-script li a").click(function() {
-        $(".btn:first-child").html($(this).text()+' <span class="caret"></span>');
-    })
-
-
 </script>
 {% endblock %}
