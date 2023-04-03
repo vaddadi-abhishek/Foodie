@@ -17,7 +17,6 @@ def user_location():
         location_data = response.json()
         return location_data
     except Exception as e:
-        print(e)
         return None
 
 def location_details():
@@ -25,18 +24,20 @@ def location_details():
     states = State.objects.all()
     cities = City.objects.all()
 
-    stateId = State.objects.filter(name=location['region']).values('id')[0]['id']
-    city = City.objects.filter(state_id=stateId).values('name')
-    city_list = list(city)
+    if(location != None):
+        stateId = State.objects.filter(name=location['region']).values('id')[0]['id']
+        city = City.objects.filter(state_id=stateId).values('name')
+        city_list = list(city)
+    else:
+        city_list = None
 
     context = {'states': states, 'cities': cities, 'city_list': city_list, 'location': location}
-
     return context
 
 # Home Page
 def index(request):
     context = location_details()
-    if not context['location']['city']:
+    if(context['location'] == None or not context['location']['city']):
         return render(request, 'index.html', context)
     else:
         return redirect(reverse('home', args=[context['location']['region'],context['location']['city']]))
@@ -73,7 +74,7 @@ def registerUser(request):
             return redirect('registerUser')
         else:
             User = get_user_model()
-            user = User.objects.create_user(full_name=full_name, gender='None', email=email, password=password)
+            user = User.objects.create_user(full_name=full_name, gender='None', email=email, mobile='', password=password)
             user.save()
             print('User Created')
             auth.login(request, user)

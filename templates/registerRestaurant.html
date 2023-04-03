@@ -38,7 +38,7 @@
                 </div>
                 <!-- Right Side -->
                 <div class="right-side">
-                    <form action="{% url 'registerRestaurant' %}" method="POST">
+                    <form action="{% url 'regRestaurant' %}" enctype="multipart/form-data" method="POST">
                         {% csrf_token %}
                         <!-- Persinal Info -->
                         <div class="main p-4 active">
@@ -51,8 +51,8 @@
                                 <div class="col">
                                     <div class="form-floating mb-3">
                                         <input type="email" name="email" class="form-control"
-                                               placeholder="Your Email Address" required>
-                                        <label>Your Email address</label>
+                                               placeholder="Your Email" value="{{ request.user.email }}" required disabled>
+                                        <label>Your Email</label>
                                         <span class="error-msg"></span>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                 <div class="col">
                                     <div class="form-floating mb-3">
                                         <input type="text" name="full_name" class="form-control"
-                                               placeholder="Your Full Name" required>
+                                               placeholder="Your Full Name" value="{{ request.user.full_name }}" required disabled>
                                         <label>Your Full Name</label>
                                         <span class="error-msg"></span>
                                     </div>
@@ -116,7 +116,8 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select border border-red" id="exist_state-{{address.id}}" name="add_state" required>
+                                        <select class="form-select border border-red" id="exist_state-{{address.id}}"
+                                                name="add_state" required>
                                             <option selected hidden disabled value="">Choose...</option>
                                             {% for state in states %}
                                             <option value="{{ state.id }}">{{ state }}</option>
@@ -131,7 +132,8 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="exist_city-{{address.id}}" name="add_city" required>
+                                        <select class="form-select" id="exist_city-{{address.id}}" name="add_city"
+                                                required>
 
                                         </select>
                                         <label>City</label>
@@ -159,7 +161,8 @@
                             </div>
                             <!-- Eating House License -->
                             <div class="mb-3">
-                                <label class="form-label"> Eating House License: <span class="text-secondary">(optional)</span>
+                                <label class="form-label"> Eating House License: <span
+                                        class="text-secondary">(optional)</span>
                                 </label>
                                 <input class="form-control form-control-sm" name="eat_house" type="file">
                             </div>
@@ -170,7 +173,8 @@
                             </div>
                             <!-- NOC Fire Department -->
                             <div class="mb-3">
-                                <label class="form-label"> NOC Fire Department:<span class="text-secondary">(optional)</span>
+                                <label class="form-label"> NOC Fire Department:<span
+                                        class="text-secondary">(optional)</span>
                                 </label>
                                 <input class="form-control form-control-sm" name="noc_fire" type="file">
                             </div>
@@ -189,8 +193,7 @@
                             <!-- Images -->
                             <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">Restaurant Images</label>
-                                <input class="form-control" name="restaurant_images" type="file" id="formFileMultiple"
-                                       required>
+                                <input class="form-control" type="file" name="restaurant_images" id="formFileMultiple" multiple>
                                 <span class="error-msg"></span>
                             </div>
                             <!-- Buttons -->
@@ -302,14 +305,6 @@ function validateform(){
                 errorMessage.textContent = 'This Field is required';
             }
         }
-        if(vaildate_input.type === 'email') {
-            var emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-            if(!emailRegex.test(vaildate_input.value)){
-                validate=false;
-                vaildate_input.classList.add('border', 'border-danger');
-                errorMessage.textContent = 'Please enter a valid email address';
-            }
-        }
         if(vaildate_input.type === 'tel') {
             var phoneRegex = /^[6789]\d{9}$/;
             if(!phoneRegex.test(vaildate_input.value)){
@@ -345,5 +340,6 @@ $(document).ready(function() {
       }
     });
   });
+
 </script>
 {% endblock %}
