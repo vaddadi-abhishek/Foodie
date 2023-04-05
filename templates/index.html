@@ -15,6 +15,27 @@
     <source src="{% static 'videos/Foodie.mp4' %}" type="video/mp4">
 </video>
 
+{% if messages %}
+<!-- Modal -->
+<div class="modal fade show in" id="errMsgModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% for message in messages %}
+                <div class="alert {{message.tags}}" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% if request.path != '/'%}
 <div class="search-bar">
     <div class="input-group">
@@ -219,7 +240,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Footer States Links -->
     <div class="text-center">
         <span class="fs-4 text-uppercase text-primary fw-bolder text-decoration-underline">States</span>
@@ -263,5 +284,13 @@
             myNav.classList.remove("nav-scroll");
         }
     }
+
+    // bootstrap modal
+    var myModal = new bootstrap.Modal(document.getElementById('errMsgModal'));
+    myModal.show()
+
+
+
+
 </script>
 {% endblock %}

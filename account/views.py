@@ -91,10 +91,6 @@ def loginUser(request):
     elif (request.method == 'POST'):
         email = request.POST.get('email')
         password = request.POST.get('password')
-        # data = [email, password]
-        # return HttpResponse(data)
-
-        # User = get_user_model()
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:

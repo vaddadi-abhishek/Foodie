@@ -19,6 +19,7 @@ class registerRestaurant(models.Model):
         db_table = 'Restaurant_Registration'
 
 class UploadedFile(models.Model):
+    restaurant = models.ForeignKey(registerRestaurant, on_delete=models.CASCADE)
     file = models.FileField(upload_to='uploads/')
 
     class Meta:
