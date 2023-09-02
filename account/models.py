@@ -41,7 +41,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     objects = CustomUserManager()
 
@@ -55,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class State(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    state_code = models.CharField(max_length=2)
+    state_code = models.CharField(max_length=3)
     def __str__(self):
         return self.name
 

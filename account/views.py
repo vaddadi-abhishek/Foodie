@@ -6,163 +6,82 @@ from account.models import State, City, Address
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.urls import reverse
-import requests
-
+from .forms import LoginForm, RegisterForm, userProfileForm
 
 # Create your views here.
-# Getting User Location
-def user_location():
-    try:
-        response = requests.get('https://ipinfo.io/json')
-        location_data = response.json()
-        return location_data
-    except Exception as e:
-        return None
-
-def location_details():
-    location = user_location()
-    states = State.objects.all()
-    cities = City.objects.all()
-
-    if(location != None):
-        stateId = State.objects.filter(name=location['region']).values('id')[0]['id']
-        city = City.objects.filter(state_id=stateId).values('name')
-        city_list = list(city)
-    else:
-        city_list = None
-
-    context = {'states': states, 'cities': cities, 'city_list': city_list, 'location': location}
-    return context
-
 # Home Page
 def index(request):
-    context = location_details()
-    if(context['location'] == None or not context['location']['city']):
-        return render(request, 'index.html', context)
-    else:
-        return redirect(reverse('home', args=[context['location']['region'],context['location']['city']]))
+    return render(request, 'index.html')
 
 # home
 def home(request, state, city):
-    context = location_details()
-    return render(request, 'index.html', context)
+    return render(request, 'index.html')
 
 # Register User
 def registerUser(request):
     if (request.user.is_authenticated):
         return redirect('index')
     elif (request.method == 'POST'):
-        full_name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
+        regForm = RegisterForm(request.POST)
 
-        if (full_name.isspace()):
-            messages.info(request, 'Full Name should not be empty')
-            return redirect('registerUser')
-        elif (len(full_name) < 6):
-            messages.info(request, 'Full Name should not be less than 6 character long')
-            return redirect('registerUser')
-        elif (password.isspace() or (' ' in password) == True):
-            messages.info(request, 'password should not contain any spaces')
-            return redirect('registerUser')
-        elif (len(password) < 8):
-            messages.info(request, 'Password should be min 8 characters long')
-            return redirect('registerUser')
-        elif (password != confirm_password):
-            messages.info(request, 'Password and Confirm password must be same')
-            return redirect('registerUser')
+        if(regForm.is_valid()):
+            try:
+                full_name = regForm.cleaned_data['full_name']
+                email = regForm.cleaned_data['email']
+                password = regForm.cleaned_data['password']
+
+                User = get_user_model()
+                user = User.objects.create_user(full_name=full_name, gender='None', email=email, mobile='',
+                                                password=password)
+                user.save()
+                auth.login(request, user)
+                return redirect('index')
+            except Exception as e:
+                # Add a custom error to the form
+                regForm.add_error('email', 'Email already exists.')
+                return render(request, 'register.html', {'regForm': regForm})
+
         else:
-            User = get_user_model()
-            user = User.objects.create_user(full_name=full_name, gender='None', email=email, mobile='', password=password)
-            user.save()
-            print('User Created')
-            auth.login(request, user)
-            return redirect('index')
+            return render(request, 'register.html', {'regForm': regForm})
     else:
-        return render(request, 'register.html')
+        regForm = RegisterForm()
+        return render(request, 'register.html', {'regForm':regForm})
 
-
-# Login User
 def loginUser(request):
-    if (request.user.is_authenticated):
+    if request.user.is_authenticated:
         return redirect('index')
-
-    elif (request.method == 'POST'):
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = auth.authenticate(email=email, password=password)
-
-        if user is not None:
-            auth.login(request, user)
-            return redirect('index')
+    elif request.method == 'POST':
+        loginForm = LoginForm(request.POST)
+        if loginForm.is_valid():
+            email = loginForm.cleaned_data['email']
+            password = loginForm.cleaned_data['password']
+            user = auth.authenticate(email=email, password=password)
+            if user is not None:
+                auth.login(request, user)
+                return redirect('index')
+            else:
+                loginForm.add_error(None, 'Invalid Credentials, Try again')
+                return render(request, 'login.html', {'loginForm': loginForm})
         else:
-            messages.info(request, 'Invalid Username or Password')
-            return redirect('loginUser')
+            return render(request, 'login.html', {'loginForm': loginForm})
     else:
-        return render(request, 'login.html')
-
+        loginForm = LoginForm()
+        return render(request, 'login.html', {'loginForm': loginForm})
 
 # Logout User
 def logoutUser(request):
     auth.logout(request)
     return redirect('index')
 
-
 # User Profile
 def userProfile(request):
     if (request.user.is_authenticated == False):
         return redirect('index')
     elif (request.method == 'POST'):
-        full_name = request.POST.get('full_name')
-        gender = request.POST.get('gender')
-
-        if (full_name != request.user.full_name and gender != request.user.gender):
-            if (len(full_name) < 6):
-                messages.info(request, 'Full Name should be more than 6 characters')
-                return redirect(userProfile)
-            else:
-                User = get_user_model()
-                user = User.objects.get(pk=request.user.id)
-                user.full_name = full_name
-                user.gender = gender
-                user.save()
-                messages.success(request, 'Fullname and Gender are updated')
-                return redirect(userProfile)
-
-        elif (full_name != request.user.full_name and gender == request.user.gender):
-            if (len(full_name) < 6):
-                messages.info(request, 'Full Name should be more than 6 characters')
-                return redirect(userProfile)
-            else:
-                User = get_user_model()
-                user = User.objects.get(pk=request.user.id)
-                user.full_name = full_name
-                user.save()
-                messages.success(request, 'Full Name updated')
-                return redirect(userProfile)
-        elif (gender != request.user.gender and full_name == request.user.full_name):
-            User = get_user_model()
-            user = User.objects.get(pk=request.user.id)
-            user.gender = gender
-            user.save()
-            messages.success(request, 'Gender is updated')
-            return redirect(userProfile)
-        else:
-            messages.info(request, 'No changes are made')
-            return redirect(userProfile)
+        pass
     else:
-        state_obj = State.objects.all()
-        cities_obj = City.objects.all()
-        adress_obj = Address.objects.filter(user_id=request.user.id)
-
-        states = {'states': state_obj}
-        cities = {'cities': cities_obj}
-        address = {'address': adress_obj}
-
-        context = {'state_context': states, 'city_context': cities, 'address_context': address}
-
-        return render(request, 'profile.html', context)
+        userProfile = userProfileForm
+        return render(request, 'profile.html', {'userProfile':userProfile})
 
 # addAdress
 def addAdress(request):

@@ -70,17 +70,6 @@ section .form-content {
     color: transparent;
 }
 
-.bold {
-    font-weight: 400;
-}
-
-.fa-solid {
-    border: 2px solid black;
-    padding: 4px;
-    border-radius: 13px;
-    color: #0275d8;
-}
-
 @media (max-width: 768px) {
     section .bgImg {
         position: absolute;

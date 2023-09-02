@@ -10,7 +10,5 @@ urlpatterns = [
     path('addressBook/<int:address_id>', views.addressBook, name='addressBook'),
     path('removeAdress/<int:address_id>', views.removeAdress, name='removeAdress'),
     path('get_cities/<int:state_id>/', views.get_cities, name='get_cities'),
-    path('user_location', views.user_location, name='user_location'),
     path('logoutUser', views.logoutUser, name='logoutUser'),
-    path('<str:state>/<str:city>', views.home, name='home'),
 ]

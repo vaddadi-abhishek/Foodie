@@ -1,59 +1,14 @@
 {% block editProfile %}
+{% load crispy_forms_tags %}
+
 <!-- Form -->
 <form action="{% url 'userProfile' %}" method="post">
     {% csrf_token %}
     <fieldset class="border border-3 rounded p-5">
         <legend class="bg-primary text-center p-2 mb-3" style="border-radius: 14px; color: white;">
-            {{request.user.full_name}}'s Profile
+            {{request.user.full_name|title}}'s Profile
         </legend>
-        <!-- Messages -->
-        {% for message in messages %}
-        <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
-            {% if message.tags == 'alert-success' %}
-            <i class="fa-sharp fa-solid fa-check"></i>
-            {% else %}
-            <i class="fa-sharp fa-solid fa-triangle-exclamation"></i>
-            {% endif %}
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                    aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        <!-- Email -->
-        <div class="mb-3">
-            <label for="email" class="form-label">
-                <i class="fa-regular fa-envelope text-primary"></i>
-                Email
-            </label>
-            <input type="email" class="form-control" id="email" name="email"
-                   value="{{request.user.email}}" disabled required>
-        </div>
-        <!-- Full Name -->
-        <div class="mb-3">
-            <label for="full_name" class="form-label">
-                <i class="fa-regular fa-user text-primary"></i>
-                Full Name
-            </label>
-            <input type="text" class="form-control" id="full_name" name="full_name"
-                   value="{{request.user.full_name}}" required>
-        </div>
-        <!-- Gender -->
-        <div class="mb-3">
-            <label class="form-label">
-                <i class="fa-solid fa-venus-mars text-primary"></i>
-                Gender
-            </label>
-            <div class="input-group mb-3">
-                <select class="form-select" id="inputGroupSelect03"
-                        aria-label="Example select with button addon" name="gender">
-                    <option value="{{request.user.gender}}" selected hidden>
-                        {{request.user.gender}}
-                    </option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-        </div>
+        {{userProfile|crispy}}
         <!-- Sumbit Button -->
         <button type="submit" class="btn btn-primary float-end">Save</button>
     </fieldset>
