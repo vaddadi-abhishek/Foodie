@@ -2,15 +2,24 @@
 {% load crispy_forms_tags %}
 
 <!-- Form -->
-<form action="{% url 'userProfile' %}" method="post">
+<form action="{% url 'userProfile' %}" method="POST" novalidate>
     {% csrf_token %}
     <fieldset class="border border-3 rounded p-5">
         <legend class="bg-primary text-center p-2 mb-3" style="border-radius: 14px; color: white;">
-            {{request.user.full_name|title}}'s Profile
+            <span class="text-uppercase text-dark">{{request.user.full_name|title}}</span>'s profile
         </legend>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="{{ message.tags }}" role="alert" data-bs-dismiss="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
         {{userProfile|crispy}}
         <!-- Sumbit Button -->
-        <button type="submit" class="btn btn-primary float-end">Save</button>
+        <button type="submit" id="saveBtn" class="btn btn-primary float-end">
+            Save
+        </button>
     </fieldset>
 </form>
 {% endblock %}

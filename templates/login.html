@@ -18,6 +18,13 @@
             <h3 class="text-center mb-4">Sign<span class="text-primary">In</span></h3>
             <form action="{% url 'loginUser' %}" method="post" novalidate>
                 {% csrf_token %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="{{ message.tags }}" role="alert" data-bs-dismiss="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
                 {{ loginForm|crispy }}
                 <div class="text-center mb-3">
                     <button class="btn btn-primary" type="submit">Login</button>

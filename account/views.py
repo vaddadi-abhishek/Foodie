@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import auth
-from account.models import State, City, Address
+from account.models import State, City, Address, User
 from django.http import JsonResponse
 from django.http import HttpResponse
-from django.urls import reverse
+from django.core.exceptions import ValidationError
 from .forms import LoginForm, RegisterForm, userProfileForm
 
 # Create your views here.
@@ -60,7 +60,7 @@ def loginUser(request):
                 auth.login(request, user)
                 return redirect('index')
             else:
-                loginForm.add_error(None, 'Invalid Credentials, Try again')
+                messages.error(request,"Invalid Email or Password, Try again!")
                 return render(request, 'login.html', {'loginForm': loginForm})
         else:
             return render(request, 'login.html', {'loginForm': loginForm})
@@ -75,13 +75,32 @@ def logoutUser(request):
 
 # User Profile
 def userProfile(request):
-    if (request.user.is_authenticated == False):
+    if not request.user.is_authenticated:
         return redirect('index')
-    elif (request.method == 'POST'):
-        pass
+    elif request.method == 'POST':
+        user_profile = userProfileForm(request.POST)
+        if user_profile.is_valid():
+            try:
+                full_name = user_profile.cleaned_data['full_name']
+                gender = user_profile.cleaned_data['gender']
+
+                # save to database
+                User.objects.filter(id=request.user.id).update(full_name=full_name, gender=gender)
+                messages.success(request, "Profile Updated Sucessfully")
+                return redirect('userProfile')
+
+            except Exception as e:
+                return HttpResponse(e)
+        else:
+            return render(request, 'profile.html', {'userProfile':user_profile})
     else:
-        userProfile = userProfileForm
-        return render(request, 'profile.html', {'userProfile':userProfile})
+        initial_data = {
+            'email': request.user.email,
+            'full_name': request.user.full_name,
+            'gender': request.user.gender
+        }
+        user_profile = userProfileForm(initial=initial_data)
+        return render(request, 'profile.html', {'userProfile':user_profile})
 
 # addAdress
 def addAdress(request):

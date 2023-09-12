@@ -123,11 +123,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 # Messages
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-warning',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
+    messages.DEBUG: 'alert alert-info',
+    messages.INFO: 'alert alert-warning',
+    messages.SUCCESS: 'alert alert-success',
+    messages.WARNING: 'alert alert-warning',
+    messages.ERROR: 'alert alert-danger',
 }
 
 # Default primary key field type

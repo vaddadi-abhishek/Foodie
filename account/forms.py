@@ -1,6 +1,4 @@
 from django import forms
-from account.models import User
-
 class LoginForm(forms.Form):
     email = forms.EmailField(label='Email',
                              widget=forms.EmailInput(
@@ -75,14 +73,15 @@ class RegisterForm(forms.Form):
 
 class userProfileForm(forms.Form):
     email = forms.EmailField(label='Email',
-                             disabled=True,
                              widget=forms.EmailInput(
                                  attrs={
                                      'class':'form-control',
                                      'id':'email',
+                                     'readonly': True,
                                  }
                              ))
     full_name = forms.CharField(label='Full Name',
+                                required=True,
                                 widget=forms.TextInput(
                                     attrs={
                                         'class':'form-control',
@@ -90,21 +89,22 @@ class userProfileForm(forms.Form):
                                     }
                                 ))
     gender = forms.ChoiceField(label='Gender',
+                               required=True,
                                choices=[
                                    ('M','Male'),
                                    ('F', 'Female'),
-                                   ('O', 'Others'),
                                ],
                                widget=forms.Select(
                                    attrs={
                                        'class':'form-select',
-                                       'id':'gender-select'
+                                       'id':'gender'
                                    }
                                ))
+    def clean(self):
+        cleaned_data = super().clean()
+        full_name = cleaned_data.get('full_name')
 
-    def __init__(self, *args, **kwargs):
-        super(userProfileForm, self).__init__(*args, **kwargs)
-        user = self.initial.get('email')
-        if user:
-            self.fields['email'].initial = user.email
-
+        if not full_name:
+            raise forms.ValidationError('Full Name should not be Empty')
+        elif (len(full_name) < 8):
+            raise forms.ValidationError('Full Name should be more than 8 characters')
