@@ -3,12 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import { Search, MapPin, ShoppingCart, User, Menu, X } from "lucide-react";
 import { Button } from "../button";
 import { Input } from "../input";
+import imgLogo from "@/assets/imgLogo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
-  
+
   const isAuthenticated = false; // This will come from Supabase authentication
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -19,8 +20,12 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-accent rounded-lg flex items-center justify-center">
-              <span className="text-accent-foreground font-bold text-lg">F</span>
+            <div className="flex items-center justify-center">
+              <img
+                src={imgLogo}
+                alt={imgLogo}
+                className="w-full h-14 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
             <span className="text-2xl font-bold text-primary">Foodie</span>
           </Link>
@@ -63,7 +68,7 @@ const Navigation = () => {
               </>
             ) : (
               <>
-                <Link to="/signup" className="btn-ghost">Sign Up</Link>
+                <Link to="/register" className="btn-ghost">Sign Up</Link>
                 <Link to="/login" className="btn-ghost">Log In</Link>
               </>
             )}
@@ -114,7 +119,7 @@ const Navigation = () => {
                   </>
                 ) : (
                   <>
-                    <Link to="/signup" className="block py-2 text-foreground">Sign Up</Link>
+                    <Link to="/register" className="block py-2 text-foreground">Sign Up</Link>
                     <Link to="/login" className="block py-2 text-foreground">Log In</Link>
                   </>
                 )}
