@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react";
-import { Button } from "../button";
-import { Input } from "../input";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

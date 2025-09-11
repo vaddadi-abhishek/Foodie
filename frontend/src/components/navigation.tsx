@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Search, MapPin, ShoppingCart, User, Menu, X } from "lucide-react";
-import { Button } from "../button";
-import { Input } from "../input";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import imgLogo from "@/assets/imgLogo.png";
 
 const Navigation = () => {

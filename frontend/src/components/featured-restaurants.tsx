@@ -1,5 +1,5 @@
 import { Star, Clock, Truck } from "lucide-react";
-import { Button } from "../button";
+import { Button } from "./ui/button";
 
 // Mock data - this will come from your Supabase database
 const featuredRestaurants = [

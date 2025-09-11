@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Plus, Minus, Star, Clock, ChefHat } from "lucide-react";
-import Navigation from "@/components/ui/navigation";
-import Footer from "@/components/ui/footer";
-import { Button } from "@/components/button";
+import Navigation from "@/components/navigation";
+import Footer from "@/components/footer";
+import { Button } from "@/components/ui/button";
 
 // Mock menu data - this will come from your Supabase database
 const restaurant = {

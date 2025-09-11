@@ -1,9 +1,9 @@
-import Navigation from "@/components/ui/navigation";
-import HeroSection from "@/components/ui/hero-section";
-import HowItWorks from "@/components/ui/how-it-works";
-import FeaturedRestaurants from "@/components/ui/featured-restaurants";
-import Testimonials from "@/components/ui/testimonials";
-import Footer from "@/components/ui/footer";
+import Navigation from "@/components/navigation";
+import HeroSection from "@/components/hero-section";
+import HowItWorks from "@/components/how-it-works";
+import FeaturedRestaurants from "@/components/featured-restaurants";
+import Testimonials from "@/components/testimonials";
+import Footer from "@/components/footer";
 
 const Index = () => {
   return (

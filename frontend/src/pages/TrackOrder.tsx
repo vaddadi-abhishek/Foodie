@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { CheckCircle, Clock, Truck, MapPin, Phone } from "lucide-react";
-import Navigation from "@/components/ui/navigation";
-import Footer from "@/components/ui/footer";
-import { Button } from "@/components/button";
+import Navigation from "@/components/navigation";
+import Footer from "@/components/footer";
+import { Button } from "@/components/ui/button";
 
 // Mock order data - this will come from your Supabase database
 const orderData = {

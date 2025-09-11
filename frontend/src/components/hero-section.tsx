@@ -1,4 +1,4 @@
-import { Button } from "../button";
+import { Button } from "./ui/button";
 import { ArrowRight, Clock, Star, Shield } from "lucide-react";
 import heroImage from "@/assets/hero-food.jpg";
 
