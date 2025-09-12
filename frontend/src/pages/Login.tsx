@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/AuthContext"; 
 
 interface LoginFormData {
   email: string;
@@ -13,6 +14,7 @@ interface LoginFormData {
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const {
     register,
@@ -25,7 +27,7 @@ export default function LoginPage() {
       const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data), // backend expects email + password
+        body: JSON.stringify(data),
       });
 
       const resData = await response.json();
@@ -35,11 +37,12 @@ export default function LoginPage() {
         return;
       }
 
-      // Save tokens in localStorage
-      localStorage.setItem("access", resData.access);
+      // ✅ Save tokens through AuthContext (updates state + localStorage)
+      login(resData.access);
+
+      // You can also store refresh token if needed
       localStorage.setItem("refresh", resData.refresh);
 
-      // Redirect to home/dashboard
       navigate("/");
     } catch (error) {
       alert("Something went wrong. Please try again later!");

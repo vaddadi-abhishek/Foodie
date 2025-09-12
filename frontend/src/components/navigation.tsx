@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Search, MapPin, ShoppingCart, User, Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import imgLogo from "@/assets/imgLogo.png";
+import { useAuth } from "@/hooks/AuthContext"; // ✅ using context
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const location = useLocation();
 
-  const isAuthenticated = false; // This will come from Supabase authentication
+  const { isAuthenticated } = useAuth(); // ✅ directly from context
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -23,16 +23,15 @@ const Navigation = () => {
             <div className="flex items-center justify-center">
               <img
                 src={imgLogo}
-                alt={imgLogo}
+                alt="Foodie Logo"
                 className="w-full h-14 object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
             <span className="text-2xl font-bold text-primary">Foodie</span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Search + Location */}
           <div className="hidden lg:flex items-center space-x-8 flex-1 justify-center max-w-2xl mx-8">
-            {/* Search Bar */}
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
@@ -43,15 +42,13 @@ const Navigation = () => {
                 className="pl-10 pr-4 py-2 w-full rounded-lg border border-input bg-background focus-ring"
               />
             </div>
-
-            {/* Location Selector */}
             <div className="flex items-center space-x-2 text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
               <MapPin className="w-4 h-4" />
               <span className="text-sm font-medium">Select Location</span>
             </div>
           </div>
 
-          {/* Desktop Actions */}
+          {/* Desktop Auth / User Actions */}
           <div className="hidden lg:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
@@ -75,7 +72,7 @@ const Navigation = () => {
             <Button className="btn-hero">Order Now</Button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Toggle */}
           <button
             onClick={toggleMenu}
             className="lg:hidden p-2 rounded-md text-muted-foreground hover:text-foreground focus-ring"
@@ -88,7 +85,6 @@ const Navigation = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-4 border-t border-border animate-slide-in-right">
             <div className="space-y-4">
-              {/* Mobile Search */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
@@ -99,14 +95,10 @@ const Navigation = () => {
                   className="pl-10 pr-4 py-2 w-full rounded-lg"
                 />
               </div>
-
-              {/* Mobile Location */}
               <div className="flex items-center space-x-2 text-muted-foreground py-2">
                 <MapPin className="w-4 h-4" />
                 <span className="text-sm font-medium">Select Location</span>
               </div>
-
-              {/* Mobile Navigation Links */}
               <div className="space-y-2">
                 {isAuthenticated ? (
                   <>
