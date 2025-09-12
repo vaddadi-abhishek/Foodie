@@ -26,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ("id", "username", "email", "is_owner")
+        read_only_fields = ("email", "username")
 
 
 # ✅ Override JWT serializer to use email

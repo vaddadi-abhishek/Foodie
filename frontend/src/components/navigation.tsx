@@ -60,7 +60,9 @@ const Navigation = () => {
                   </span>
                 </Link>
                 <div className="relative">
-                  <User className="w-5 h-5 text-muted-foreground cursor-pointer" />
+                  <Link to="/profile">
+                    <User className="w-5 h-5 text-muted-foreground cursor-pointer" />
+                  </Link>
                 </div>
               </>
             ) : (
