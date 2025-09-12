@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/AuthContext";
+import { useEffect } from "react";
 
 interface RegisterFormData {
   username: string;
@@ -16,6 +18,7 @@ interface RegisterFormData {
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const {
     register,
@@ -24,6 +27,13 @@ export default function RegisterPage() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>();
+
+  // ✅ Redirect if already registered
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/"); // redirect to home (or dashboard)
+    }
+  }, [isAuthenticated, navigate]);
 
   const password = watch("password");
 

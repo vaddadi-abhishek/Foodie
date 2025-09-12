@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/AuthContext"; 
+import { useAuth } from "@/hooks/AuthContext";
+import { useEffect } from "react";
 
 interface LoginFormData {
   email: string;
@@ -14,13 +15,20 @@ interface LoginFormData {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>();
+
+  // ✅ Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/"); // redirect to home (or dashboard)
+    }
+  }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data: LoginFormData) => {
     try {
