@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginFormData {
   email: string;
@@ -12,6 +12,8 @@ interface LoginFormData {
 }
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -19,13 +21,29 @@ export default function LoginPage() {
   } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("Login Form Data:", data);
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data), // backend expects email + password
+      });
 
-    // Simulate API check delay (2s)
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      const resData = await response.json();
 
-    console.log("Finished checking credentials");
-    // TODO: Add actual DB check later
+      if (!response.ok) {
+        alert(resData.detail || "Invalid email or password");
+        return;
+      }
+
+      // Save tokens in localStorage
+      localStorage.setItem("access", resData.access);
+      localStorage.setItem("refresh", resData.refresh);
+
+      // Redirect to home/dashboard
+      navigate("/");
+    } catch (error) {
+      alert("Something went wrong. Please try again later!");
+    }
   };
 
   return (
@@ -57,9 +75,8 @@ export default function LoginPage() {
                 type="email"
                 placeholder="you@example.com"
                 {...register("email", { required: "Email is required" })}
-                className={`rounded-xl border-muted focus:ring-2 focus:ring-accent ${
-                  errors.email ? "border-red-500" : ""
-                }`}
+                className={`rounded-xl border-muted focus:ring-2 focus:ring-accent ${errors.email ? "border-red-500" : ""
+                  }`}
               />
               {errors.email && (
                 <p className="text-sm text-red-600">{errors.email.message}</p>
@@ -74,9 +91,8 @@ export default function LoginPage() {
                 type="password"
                 placeholder="••••••••"
                 {...register("password", { required: "Password is required" })}
-                className={`rounded-xl border-muted focus:ring-2 focus:ring-accent ${
-                  errors.password ? "border-red-500" : ""
-                }`}
+                className={`rounded-xl border-muted focus:ring-2 focus:ring-accent ${errors.password ? "border-red-500" : ""
+                  }`}
               />
               {errors.password && (
                 <p className="text-sm text-red-600">{errors.password.message}</p>

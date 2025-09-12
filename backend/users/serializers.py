@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth.password_validation import validate_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -25,3 +26,17 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ("id", "username", "email", "is_owner")
+
+
+# ✅ Override JWT serializer to use email
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token["username"] = user.username  # optional: add username to token
+        return token
+
+    def validate(self, attrs):
+        # Rename "username" field to "email"
+        attrs["username"] = attrs.get("email", attrs.get("username"))
+        return super().validate(attrs)
