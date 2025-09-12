@@ -69,7 +69,6 @@ const Navigation = () => {
                 <Link to="/login" className="btn-ghost">Log In</Link>
               </>
             )}
-            <Button className="btn-hero">Order Now</Button>
           </div>
 
           {/* Mobile Toggle */}
