@@ -35,8 +35,6 @@ const Profile = () => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem("access_token")?.trim();
-                console.log("Token:", token);
-
                 if (!token) throw new Error("Not authenticated");
 
                 const res = await fetch("http://127.0.0.1:8000/api/users/profile/?format=json", {
