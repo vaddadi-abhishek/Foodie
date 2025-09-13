@@ -76,7 +76,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(true);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      try {
+        await fetch("http://127.0.0.1:8000/api/users/logout/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+          },
+        });
+      } catch (err) {
+        console.error("Logout failed on server:", err);
+      }
+    }
+    // Always clear local storage and state regardless of server outcome
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     setIsAuthenticated(false);

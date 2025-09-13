@@ -10,7 +10,7 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { isAuthenticated } = useAuth(); // ✅ directly from context
+  const { isAuthenticated, logout } = useAuth(); // ✅ get logout from context
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -52,7 +52,9 @@ const Navigation = () => {
           <div className="hidden lg:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <Link to="/logout" className="btn-ghost">Logout</Link>
+                <button onClick={logout} className="btn-ghost">
+                  Logout
+                </button>
                 <Link to="/offers" className="btn-ghost">Offers</Link>
                 <Link to="/cart" className="relative btn-ghost">
                   <ShoppingCart className="w-5 h-5" />
@@ -110,6 +112,9 @@ const Navigation = () => {
                       <span>Cart (3)</span>
                     </Link>
                     <Link to="/profile" className="block py-2 text-foreground">Profile</Link>
+                    <button onClick={logout} className="block w-full text-left py-2 text-foreground">
+                      Logout
+                    </button>
                   </>
                 ) : (
                   <>

@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser, UserToken
 from django.contrib.auth.password_validation import validate_password
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from django.utils import timezone
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -38,6 +39,21 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
-        # Rename "username" field to "email"
-        attrs["username"] = attrs.get("email", attrs.get("username"))
-        return super().validate(attrs)
+        # The parent class validates the user, and we get the user object
+        attrs["username"] = attrs.get("email")
+        data = super().validate(attrs)
+
+        # Manually update the last_login field upon successful login
+        self.user.last_login = timezone.now()
+        self.user.save(update_fields=["last_login"])
+
+        # Get the refresh token object
+        refresh = self.get_token(self.user)
+
+        # Save or update the refresh token in the database
+        UserToken.objects.update_or_create(
+            user=self.user,
+            defaults={'token': str(refresh)}
+        )
+
+        return data

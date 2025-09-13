@@ -48,12 +48,9 @@ export default function LoginPage() {
       // ✅ Save tokens through AuthContext (updates state + localStorage)
       login(resData.access, resData.refresh);
 
-      // You can also store refresh token if needed
-      localStorage.setItem("refresh", resData.refresh);
-
       navigate("/");
     } catch (error) {
-      alert("Something went wrong. Please try again later!");
+      alert(error);
     }
   };
 
