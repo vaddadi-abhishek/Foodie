@@ -122,7 +122,6 @@ const Navigation = () => {
                     <Link to="/login" className="block py-2 text-foreground">Log In</Link>
                   </>
                 )}
-                <Button className="btn-hero w-full mt-4">Order Now</Button>
               </div>
             </div>
           </div>
