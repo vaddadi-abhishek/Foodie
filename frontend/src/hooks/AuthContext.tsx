@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import * as jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -31,9 +31,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const decoded: DecodedToken = jwt_decode(accessToken);
+      const decoded: DecodedToken = jwtDecode(accessToken);
       const now = Date.now() / 1000;
-
+      
       if (decoded.exp < now) {
         // Access token expired, try refreshing
         if (!refreshToken) throw new Error("No refresh token");

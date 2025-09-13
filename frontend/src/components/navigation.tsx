@@ -52,6 +52,7 @@ const Navigation = () => {
           <div className="hidden lg:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
+                <Link to="/logout" className="btn-ghost">Logout</Link>
                 <Link to="/offers" className="btn-ghost">Offers</Link>
                 <Link to="/cart" className="relative btn-ghost">
                   <ShoppingCart className="w-5 h-5" />
@@ -59,7 +60,7 @@ const Navigation = () => {
                     3
                   </span>
                 </Link>
-                <div className="relative">
+                <div className="relative btn-ghost">
                   <Link to="/profile">
                     <User className="w-5 h-5 text-muted-foreground cursor-pointer" />
                   </Link>
