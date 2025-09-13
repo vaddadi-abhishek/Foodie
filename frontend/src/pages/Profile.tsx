@@ -76,8 +76,8 @@ const Profile = () => {
             <main className="swiss-container py-12">
                 <div className="max-w-4xl mx-auto">
                     {/* Header with User Info */}
-                    <div className="mb-12 flex justify-between items-center">
-                        <div>
+                    <div className="mb-12 flex justify-end lg:justify-between items-center">
+                        <div className="hidden lg:block">
                             <h1 className="text-4xl font-bold text-foreground mb-2">My Profile</h1>
                             <p className="text-muted-foreground text-lg">
                                 Manage your account information and preferences
