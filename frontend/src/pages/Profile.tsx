@@ -208,6 +208,37 @@ const Profile = () => {
                             </div>
                         </CardHeader>
                     </Card>
+
+                    {/* Additional Cards for Future Features */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card className="card-feature">
+                            <CardHeader>
+                                <CardTitle className="text-foreground">Order History</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground mb-4">
+                                    View your past orders and reorder your favorites
+                                </p>
+                                <Button variant="outline" className="btn-ghost" disabled>
+                                    Coming Soon
+                                </Button>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="card-feature">
+                            <CardHeader>
+                                <CardTitle className="text-foreground">Preferences</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground mb-4">
+                                    Manage your dietary preferences and delivery settings
+                                </p>
+                                <Button variant="outline" className="btn-ghost" disabled>
+                                    Coming Soon
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </main>
 
